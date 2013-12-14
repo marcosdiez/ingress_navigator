@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">aa Ingress Navigator</string>
+    <string name="action_settingsA">SettingsA</string>
+    <string name="action_settingsB">SettingsB</string>
+    <string name="action_settingsC">SettingsC</string>
+    <string name="action_settingsD">SettingsD</string>
+
+    <string name="title_section1">Section 1A</string>
+    <string name="title_section2">Section 2B</string>
+    <string name="title_section3">Section 3B</string>
+    <string name="title_section4">Section 4A</string>
+    <string name="title_section5">Section 5A</string>
+    <string name="title_section6">Section 6A</string>
+    <string name="title_section7">Section 7A</string>
+    <string name="title_section8">Section 8A</string>
+    <string name="map_button_description">click to open in map</string>
+    <string name="portal_image">Portal Image</string>
+    <string name="open_portal_with_google_maps">Open Portal with Google Maps</string>
+
+
+</resources>
