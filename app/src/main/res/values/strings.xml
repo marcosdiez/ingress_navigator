@@ -7,4 +7,10 @@
     <string name="title_section3">Section 3</string>
     <string name="action_settings">Settings</string>
 
+
+    <string name="menu_search">Search</string>
+    <string name="menu_map">Navigate with GPS app</string>
+    <string name="label_chooser">Label Chooser</string>
+    <string name="drawer_open">Show navigation menu</string>
+    <string name="drawer_close">Hide navigation menu</string>
 </resources>
