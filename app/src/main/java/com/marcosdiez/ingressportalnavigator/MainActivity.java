@@ -94,13 +94,26 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        int itemId = item.getItemId();
+        switch(itemId){
+            case R.id.menu_map:
+                menuSearch();
+                return true;
+            default:
+                return true;
         }
-        return super.onOptionsItemSelected(item);
     }
 
+    private void menuSearch() {
+        openGpsUrl("45","45");
+    }
+    void openGpsUrl(String longitude, String latitude){
+        String theURL = "http://maps.google.com/maps?daddr=" + longitude + "," + latitude;
+        Log.d(TAG, "Opening location:" + theURL);
+        final Intent intent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(theURL));
+        startActivity(intent);
+    }
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
@@ -188,25 +201,13 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
             ImageView image_portal = (ImageView) rootView.findViewById(R.id.image_portal);
             image_portal.setImageResource(R.drawable.ic_layer_chooser);
-//            ImageButton map_button = (ImageButton) rootView.findViewById(R.id.menu_search);
-//
-//            map_button.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    openGpsUrl("45","45");
-//                }
-//            });
+
+
             return rootView;
         }
 
 
-        void openGpsUrl(String longitude, String latitude){
-            String theURL = "http://maps.google.com/maps?daddr=" + longitude + "," + latitude;
-            Log.d(TAG, "Opening location:" + theURL);
-            final Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(theURL));
-            startActivity(intent);
-        }
+
 
 
 
