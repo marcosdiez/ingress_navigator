@@ -87,8 +87,7 @@ function makeSqlString(portal){
         var options = portal.options;
         var optionsData = options.data;
 
-        var title = optionsData.title.replace("\"" , "'");
-
+        var title = optionsData.title.replace("\"" , "").replace("'" , "");
 
         //var data = "{ guid: '"+guid+"', title: '"+ title + ", imageUrl: '"+ optionsData.image + "',  lat: " + position.lat ", lng: " + position.lng  + " }\n";
 
