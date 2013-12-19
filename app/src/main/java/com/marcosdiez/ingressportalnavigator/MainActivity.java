@@ -8,6 +8,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
@@ -24,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
-    private final static String TAG = "IngressPortalNavigator";
+    private final static String TAG = "ING_MainActivity";
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -78,6 +80,26 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
+        loadPortalData();
+    }
+
+    private void loadPortalData() {
+        PortalList p = new PortalList(this);
+//        PortalsDbHelper p = new PortalsDbHelper(this);
+//        SQLiteDatabase portalsRo = p.getReadableDatabase();
+//
+//        Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
+//               new String[]{"id", "guid", "title", "lat", "lng"},
+//                "title like ? ", new String[]{"%planta%"}, null, null, "title");
+//        if (theCursor.moveToFirst()) {
+//            do {
+//                Log.d(TAG, theCursor.getString(0));
+//            } while (theCursor.moveToNext());
+//        }
+//        if (theCursor != null && !theCursor.isClosed()) {
+//            theCursor.close();
+//        }
     }
 
 

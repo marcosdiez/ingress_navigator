@@ -6,8 +6,8 @@ import os.path
 import sqlite3
 
 def check_parameters():
-	if len(sys.argv) == 1:
-		print "Error: usage: {} JSONFILE".format(sys.argv[0])
+	if len(sys.argv) < 3:
+		print "Error: usage: {} JSONFILE TARGET_DB".format(sys.argv[0])
 		sys.exit(0)
 
 
@@ -30,7 +30,7 @@ def download_images():
 
 def populate_db(portal_data):
 	print "Populationg DB"
-	db = sqlite3.connect('portalData.sqlite3')
+	db = sqlite3.connect(sys.argv[2])
 	c = db.cursor()
 
 
@@ -44,9 +44,7 @@ def populate_db(portal_data):
 		if "guid" in portal:
 			data = (portal["guid"], portal["title"], portal["imageUrl"], 1, portal["lat"], portal["lng"], 0, 0 , 0)
 			c.execute('INSERT INTO PortalData ("guid","title","imageUrl","imageDownloaded","lat","lng","like","target","hasKey") VALUES (?,?,?,?,?,?,?,?,?)', data)
-			db.commit()
-
-
+	db.commit()
 	db.close()
 
 
