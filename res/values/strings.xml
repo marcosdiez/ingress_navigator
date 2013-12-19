@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">aa Ingress Navigator</string>
+    <string name="app_name">Ingress Navigator</string>
     <string name="action_settingsA">SettingsA</string>
     <string name="action_settingsB">SettingsB</string>
     <string name="action_settingsC">SettingsC</string>
@@ -18,6 +18,7 @@
     <string name="map_button_description">click to open in map</string>
     <string name="portal_image">Portal Image</string>
     <string name="open_portal_with_google_maps">Open Portal with Google Maps</string>
+    <string name="like">Like</string>
 
 
 </resources>
