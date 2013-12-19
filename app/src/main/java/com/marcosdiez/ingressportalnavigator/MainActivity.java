@@ -7,19 +7,24 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements ActionBar.TabListener {
-
+    private final static String TAG = "IngressPortalNavigator";
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -180,8 +185,31 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
+
+            ImageView image_portal = (ImageView) rootView.findViewById(R.id.image_portal);
+            image_portal.setImageResource(R.drawable.ic_layer_chooser);
+//            ImageButton map_button = (ImageButton) rootView.findViewById(R.id.menu_search);
+//
+//            map_button.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    openGpsUrl("45","45");
+//                }
+//            });
             return rootView;
         }
+
+
+        void openGpsUrl(String longitude, String latitude){
+            String theURL = "http://maps.google.com/maps?daddr=" + longitude + "," + latitude;
+            Log.d(TAG, "Opening location:" + theURL);
+            final Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(theURL));
+            startActivity(intent);
+        }
+
+
+
     }
 
 }
