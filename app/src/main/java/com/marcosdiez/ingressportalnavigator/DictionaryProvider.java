@@ -40,7 +40,8 @@ public class DictionaryProvider extends ContentProvider {
     public static final String DEFINITION_MIME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
                                                        "/vnd.marcosdiez.ingressportalnavigator";
 
-    private DictionaryDatabase mDictionary;
+    //private DictionaryDatabase mDictionary;
+    private PortalList mDictionary;
 
     // UriMatcher stuff
     private static final int SEARCH_WORDS = 0;
@@ -74,7 +75,7 @@ public class DictionaryProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mDictionary = new DictionaryDatabase(getContext());
+        mDictionary =  new PortalList(getContext()); // new DictionaryDatabase(getContext());
         return true;
     }
 
