@@ -24,6 +24,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 /**
  * Provides access to the dictionary database.
@@ -91,7 +92,7 @@ public class DictionaryProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
-
+        //Log.d(TAG, "WWWW " + uri.toString());
         // Use the UriMatcher to see what kind of query we have and format the db query accordingly
         switch (sURIMatcher.match(uri)) {
             case SEARCH_SUGGEST:
@@ -129,22 +130,22 @@ public class DictionaryProvider extends ContentProvider {
     }
 
     private Cursor search(String query) {
-      query = query.toLowerCase();
-      String[] columns = new String[] {
-          BaseColumns._ID,
-          KEY_WORD,
-          KEY_DEFINITION};
+        query = query.toLowerCase();
+        String[] columns = new String[] {
+                BaseColumns._ID,
+                KEY_WORD,
+                KEY_DEFINITION};
 
-      return mDictionary.getWordMatches(query, columns);
+        return mDictionary.getWordMatches(query, columns);
     }
 
     private Cursor getWord(Uri uri) {
-      String rowId = uri.getLastPathSegment();
-      String[] columns = new String[] {
-          KEY_WORD,
-          KEY_DEFINITION};
+        String rowId = uri.getLastPathSegment();
+        String[] columns = new String[] {
+                KEY_WORD,
+                KEY_DEFINITION};
 
-      return mDictionary.getWord(rowId, columns);
+        return mDictionary.getWord(rowId, columns);
     }
 
     private Cursor refreshShortcut(Uri uri) {

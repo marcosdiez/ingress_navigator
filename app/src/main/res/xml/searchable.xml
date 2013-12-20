@@ -5,7 +5,8 @@
     android:hint="@string/search_hint"
     android:searchSuggestAuthority="com.marcosdiez.ingressportalnavigator.DictionaryProvider"
     android:searchSuggestIntentAction="android.intent.action.VIEW"
-    android:searchSuggestSelection="word MATCH ?"
-
-
+    android:searchSuggestIntentData="content://com.marcosdiez.ingressportalnavigator.DictionaryProvider/dictionary"
+    android:searchSuggestSelection=" ?"
+    android:searchSuggestThreshold="1"
+    android:includeInGlobalSearch="false"
     />

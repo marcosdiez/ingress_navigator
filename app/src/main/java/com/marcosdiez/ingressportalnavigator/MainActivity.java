@@ -95,8 +95,42 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+        handleIntent(getIntent());
+
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // Because this activity has set launchMode="singleTop", the system calls this method
+        // to deliver the intent if this activity is currently the foreground activity when
+        // invoked again (when the user executes a search from this activity, we don't create
+        // a new instance of this activity, so the system delivers the search intent here)
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+
+        if( intent.getDataString() != null){
+            Log.d(TAG, intent.getDataString());
+        }
+
+
+
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            
+            mViewPager.setCurrentItem(100);
+            // handles a click on a search suggestion; launches activity to show word
+            //Intent wordIntent = new Intent(this, WordActivity.class);
+            //wordIntent.setData(intent.getData());
+            //startActivity(wordIntent);
+        } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            Log.d(TAG, "ccccc");
+            // handles a search query
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            //showResults(query);
+        }
+        Log.d(TAG, "ddddd");
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -268,7 +302,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             ImageView image_portal = (ImageView) rootView.findViewById(R.id.image_portal);

@@ -22,7 +22,7 @@ public class PortalList {
 
     private static PortalList thePortalList=null;
 
-    public static PortalList getPortalList(Context context){
+    public static synchronized PortalList getPortalList(Context context){
         if(thePortalList == null ){
             thePortalList = new PortalList(context);
         }
@@ -61,15 +61,12 @@ public class PortalList {
     }
 
     ///////////////////////// SEARCH BLOAT
-
-
-
     private static final HashMap<String,String> mColumnMap = buildColumnMap();
 
     private static HashMap<String,String> buildColumnMap() {
-
         HashMap<String,String> map = new HashMap<String,String>();
-        map.put(BaseColumns._ID, "id AS " + BaseColumns._ID);
+        map.put(BaseColumns._ID, "id AS " +
+                BaseColumns._ID);
 
         map.put(SearchManager.SUGGEST_COLUMN_TEXT_1, "title AS " + SearchManager.SUGGEST_COLUMN_TEXT_1);
         map.put(SearchManager.SUGGEST_COLUMN_TEXT_2, "guid AS " + SearchManager.SUGGEST_COLUMN_TEXT_2);
@@ -78,6 +75,7 @@ public class PortalList {
                 SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
         map.put(SearchManager.SUGGEST_COLUMN_SHORTCUT_ID, "id AS " +
                 SearchManager.SUGGEST_COLUMN_SHORTCUT_ID);
+
         return map;
     }
 
@@ -89,7 +87,7 @@ public class PortalList {
      * @return Cursor positioned to matching word, or null if not found.
      */
     public Cursor getWord(String rowId, String[] columns) {
-        String selection = "rowid = ?";
+        String selection = "id = ?";
         String[] selectionArgs = new String[] {rowId};
 
         return query(selection, selectionArgs, columns);
