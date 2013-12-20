@@ -40,10 +40,13 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
      */
     ViewPager mViewPager;
     static PortalList thePortalList;
+    public static Activity thisActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        thisActivity = this;
+
         setContentView(R.layout.activity_main);
 
         // load Data
@@ -150,7 +153,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position);
         }
 
         @Override
@@ -163,15 +166,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
             return ((Portal) (thePortalList.portals.get(position))).title;
-//            switch (position) {
-//                case 0:
-//                    return getString(R.string.title_section1).toUpperCase(l);
-//                case 1:
-//                    return getString(R.string.title_section2).toUpperCase(l);
-//                case 2:
-//                    return getString(R.string.title_section3).toUpperCase(l);
-//            }
-//            return null;
         }
     }
 
@@ -223,6 +217,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             String theImage = thePortal.GetImageFile();
             Drawable theImageDrawable = Drawable.createFromPath(theImage);
             image_portal.setImageDrawable(theImageDrawable);
+
 
 
 
