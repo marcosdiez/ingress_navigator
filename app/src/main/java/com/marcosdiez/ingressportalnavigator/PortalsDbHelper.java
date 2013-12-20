@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by Marcos on 12/19/13.
  */
 public class PortalsDbHelper extends SQLiteOpenHelper {
-
+    private final Context mHelperContext;
     private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "portals";
     public static final String PORTAL_DATA_TABLE_NAME = "PortalData";
@@ -31,6 +31,7 @@ public class PortalsDbHelper extends SQLiteOpenHelper {
 
     PortalsDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        mHelperContext = context;
     }
 
     @Override

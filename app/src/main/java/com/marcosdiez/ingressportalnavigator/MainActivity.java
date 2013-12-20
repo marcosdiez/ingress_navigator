@@ -157,14 +157,14 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
     public boolean onQueryTextChange(String newText) {
         Log.d(TAG, "Query = " + newText);
-        PortalList.searchPortals(newText, this);
+        //PortalList.searchPortals(newText, this);
 
         return false;
     }
 
     public boolean onQueryTextSubmit(String query) {
         Log.d(TAG, "Query = " + query + " : submitted");
-        PortalList.searchPortals(query, this);
+        //PortalList.searchPortals(query, this);
 
         // mStatusView.setText("Query = " + query + " : submitted");
         return false;

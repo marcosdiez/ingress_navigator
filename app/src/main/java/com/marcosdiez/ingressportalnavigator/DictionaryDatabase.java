@@ -201,23 +201,50 @@ public class DictionaryDatabase {
 
         private void loadWords() throws IOException {
             Log.d(TAG, "Loading words...");
-            final Resources resources = mHelperContext.getResources();
-            InputStream inputStream = resources.openRawResource(R.raw.definitions);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
-            try {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    String[] strings = TextUtils.split(line, "-");
-                    if (strings.length < 2) continue;
-                    long id = addWord(strings[0].trim(), strings[1].trim());
-                    if (id < 0) {
-                        Log.e(TAG, "unable to add word: " + strings[0].trim());
-                    }
-                }
-            } finally {
-                reader.close();
+            PortalsDbHelper p = new PortalsDbHelper(mHelperContext);
+            SQLiteDatabase portalsRo = p.getReadableDatabase();
+            Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
+                    new String[]{"id", "guid", "title", "lat", "lng"},
+                    null, null ,
+                    // "title like ? ", new String[]{"%" + title + "%"},
+                    null, null, "title");
+
+            Log.d(TAG, "-------------");
+            if (theCursor.moveToFirst()) {
+                do {
+                    Portal myPortal = new Portal(theCursor);
+                    addWord(myPortal.title, myPortal.guid);
+                    Log.d(TAG, myPortal.title);
+                    //Log.d(TAG, theCursor.getString(0));
+                } while (theCursor.moveToNext());
             }
+            Log.d(TAG, "-------------");
+            portalsRo.close();
+
+//            final Resources resources = mHelperContext.getResources();
+//
+//
+//
+//
+//
+//
+//            InputStream inputStream = resources.openRawResource(R.raw.definitions);
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+//
+//            try {
+//                String line;
+//                while ((line = reader.readLine()) != null) {
+//                    String[] strings = TextUtils.split(line, "-");
+//                    if (strings.length < 2) continue;
+//                    long id = addWord(strings[0].trim(), strings[1].trim());
+//                    if (id < 0) {
+//                        Log.e(TAG, "unable to add word: " + strings[0].trim());
+//                    }
+//                }
+//            } finally {
+//                reader.close();
+//            }
             Log.d(TAG, "DONE loading words.");
         }
 

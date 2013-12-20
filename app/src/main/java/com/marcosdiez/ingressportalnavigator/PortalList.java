@@ -14,16 +14,16 @@ import java.util.Vector;
 public class PortalList {
     private final static String TAG = "ING_PortalList";
     public Vector portals = new Vector(1900);
-
+    private final PortalsDbHelper mPortalDbHelper;
 
     public PortalList(Context context){
+        mPortalDbHelper = new PortalsDbHelper(context);
         loadPortalData(context, "igreja");
         Toast.makeText(context,"Loaded " + portals.size() + " portals", Toast.LENGTH_LONG).show();
     }
 
-    public static void searchPortals(String title, Context context ){
-        PortalsDbHelper p = new PortalsDbHelper(context);
-        SQLiteDatabase portalsRo = p.getReadableDatabase();
+    public  void searchPortals(String title, Context context ){
+        SQLiteDatabase portalsRo = mPortalDbHelper.getReadableDatabase();
         Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
                 new String[]{"id", "guid", "title", "lat", "lng"},
                 "title like ? ", new String[]{"%" + title + "%"},
@@ -47,8 +47,7 @@ public class PortalList {
 
     public void loadPortalData(Context context, String titleHint) {
         int counter = 0;
-        PortalsDbHelper p = new PortalsDbHelper(context);
-        SQLiteDatabase portalsRo = p.getReadableDatabase();
+        SQLiteDatabase portalsRo = mPortalDbHelper.getReadableDatabase();
 
         Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
                 new String[]{"id", "guid", "title", "lat", "lng"},
