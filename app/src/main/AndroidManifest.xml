@@ -29,8 +29,6 @@
             <meta-data android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <!-- Displays the definition of a word. -->
-        <activity android:name=".WordActivity" />
 
         <!-- Provides search suggestions for words and their definitions. -->
         <provider android:name=".DictionaryProvider"
@@ -39,10 +37,6 @@
         <!-- Points to searchable activity so the whole app can invoke search. -->
         <meta-data android:name="android.app.default_searchable"
             android:value=".SearchableDictionary" />
-
-        <!--<meta-data android:name="android.app.searchable"-->
-            <!--android:resource="@xml/searchable" />-->
-
 
     </application>
 
