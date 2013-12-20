@@ -17,6 +17,7 @@ public class Portal {
     public String title;
     public double lat;
     public double lng;
+    public int tabId;
 
     private static String TAG =  "ING_Portal";
 
@@ -26,6 +27,7 @@ public class Portal {
         this.title = theCursor.getString(2);
         this.lat = theCursor.getDouble(3);
         this.lng = theCursor.getDouble(4);
+        this.tabId = -1;
     }
 
     public String GetImageFile(){

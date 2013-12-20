@@ -113,23 +113,21 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         if( intent.getDataString() != null){
             Log.d(TAG, intent.getDataString());
         }
-
-
-
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            
-            mViewPager.setCurrentItem(100);
-            // handles a click on a search suggestion; launches activity to show word
-            //Intent wordIntent = new Intent(this, WordActivity.class);
-            //wordIntent.setData(intent.getData());
-            //startActivity(wordIntent);
+            String searchInfo = intent.getDataString();
+            if(searchInfo!=null){
+                String portalIdStr = searchInfo.substring(searchInfo.lastIndexOf('/')+1);
+                int portalId = Integer.parseInt(portalIdStr);
+                int tabId = thePortalList.portalHashMap.get(portalId).tabId;
+                if(tabId > 0 ){
+                    mViewPager.setCurrentItem(tabId);
+                }
+            }
         } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            Log.d(TAG, "ccccc");
             // handles a search query
             String query = intent.getStringExtra(SearchManager.QUERY);
             //showResults(query);
         }
-        Log.d(TAG, "ddddd");
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -270,8 +268,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
         @Override
         public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            return ((Portal) (thePortalList.portals.get(position))).title;
+            return ((Portal)thePortalList.portals.get(position)).title;
         }
     }
 

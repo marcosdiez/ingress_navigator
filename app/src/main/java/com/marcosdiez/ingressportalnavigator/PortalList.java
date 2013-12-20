@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Vector;
 
 /**
@@ -18,6 +19,7 @@ import java.util.Vector;
 public class PortalList {
     private final static String TAG = "ING_PortalList";
     public Vector portals = new Vector(1900);
+    public LinkedHashMap<Integer,Portal> portalHashMap = new LinkedHashMap<Integer, Portal>(1900);
     private final PortalsDbHelper mPortalDbHelper;
 
     private static PortalList thePortalList=null;
@@ -31,7 +33,7 @@ public class PortalList {
 
     private PortalList(Context context){
         mPortalDbHelper = new PortalsDbHelper(context);
-        loadPortalData(context, "igreja");
+        loadPortalData(context, "");
         Toast.makeText(context,"Loaded " + portals.size() + " portals", Toast.LENGTH_LONG).show();
     }
 
@@ -48,6 +50,8 @@ public class PortalList {
         if (theCursor.moveToFirst()) {
             do {
                 Portal myPortal = new Portal(theCursor);
+                myPortal.tabId=counter;
+                portalHashMap.put(myPortal.id,myPortal);
                 portals.add(myPortal);
                 counter++;
             } while (theCursor.moveToNext());
