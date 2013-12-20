@@ -11,8 +11,12 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
@@ -96,7 +100,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
                             .setTabListener(this));
         }
         handleIntent(getIntent());
-
     }
 
     @Override
@@ -120,7 +123,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
                 int portalId = Integer.parseInt(portalIdStr);
                 int tabId = thePortalList.portalHashMap.get(portalId).tabId;
                 if(tabId > 0 ){
-                    mViewPager.setCurrentItem(tabId);
+                    mViewPager.setCurrentItem(tabId, false);
                 }
             }
         } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -306,6 +309,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             TextView txt_portal_title = (TextView) rootView.findViewById(R.id.portal_title);
             TextView txt_portal_guid  = (TextView) rootView.findViewById(R.id.portal_guid);
             TextView txt_portal_position = (TextView) rootView.findViewById(R.id.portal_position);
+            TextView txt_portal_distance = (TextView) rootView.findViewById(R.id.portal_distance);
 
 
             int portalListID = getArguments().getInt(ARG_SECTION_NUMBER);
@@ -315,6 +319,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             txt_portal_title.setText(thePortal.title);
             txt_portal_guid.setText(thePortal.guid);
             txt_portal_position.setText("GPS: " + thePortal.lat  + "," + thePortal.lng);
+
+
+            String distance = GpsStuff.getMyGpsStuff(thisActivity).distanceFromHereStr(thePortal.lat, thePortal.lng);
+            txt_portal_distance.setText("Distance: " + distance  );
 
             String theImage = thePortal.GetImageFile();
             Drawable theImageDrawable = Drawable.createFromPath(theImage);
