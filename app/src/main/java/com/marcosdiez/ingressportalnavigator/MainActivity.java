@@ -1,6 +1,7 @@
 package com.marcosdiez.ingressportalnavigator;
 
 import java.io.File;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -8,12 +9,15 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,9 +25,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
-public class MainActivity extends Activity implements ActionBar.TabListener {
+public class MainActivity extends Activity implements ActionBar.TabListener, SearchView.OnQueryTextListener {
     private final static String TAG = "ING_MainActivity";
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -41,6 +46,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     ViewPager mViewPager;
     static PortalList thePortalList;
     public static Activity thisActivity;
+
+    SearchView mSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +81,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             }
         });
 
+//        mStatusView = (TextView) findViewById(R.id.status_text);
+
+
         // For each of the sections in the app, add a tab to the action bar.
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
             // Create a tab with text corresponding to the page title defined by
@@ -87,14 +97,78 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(this.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        //searchView.setSuggestionsAdapter(
+        //searchView.setQueryHint(Html.fromHtml("<font color = #00aaaa>elefante</font>"));
+        //searchView.set
+
+
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+
+
+//        mSearchView = (SearchView) searchItem.getActionView();
+//        setupSearchView(searchItem);
         return true;
     }
 
+    protected boolean isAlwaysExpanded() {
+        return false;
+    }
+
+    private void setupSearchView(MenuItem searchItem) {
+
+        if (isAlwaysExpanded()) {
+            mSearchView.setIconifiedByDefault(false);
+        } else {
+            searchItem.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM
+                    | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+        }
+        SearchManager searchManager = (SearchManager) getSystemService(this.SEARCH_SERVICE);
+        if (searchManager != null) {
+            List<SearchableInfo> searchables = searchManager.getSearchablesInGlobalSearch();
+
+            SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
+            for (SearchableInfo inf : searchables) {
+                if (inf.getSuggestAuthority() != null
+                        && inf.getSuggestAuthority().startsWith("applications")) {
+                    info = inf;
+                }
+            }
+
+            mSearchView.setSearchableInfo(info);
+        }
+
+        mSearchView.setOnQueryTextListener(this);
+    }
+
+    public boolean onQueryTextChange(String newText) {
+        Log.d(TAG, "Query = " + newText);
+        PortalList.searchPortals(newText, this);
+
+        return false;
+    }
+
+    public boolean onQueryTextSubmit(String query) {
+        Log.d(TAG, "Query = " + query + " : submitted");
+        PortalList.searchPortals(query, this);
+
+        // mStatusView.setText("Query = " + query + " : submitted");
+        return false;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -103,19 +177,16 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         int itemId = item.getItemId();
         switch(itemId){
             case R.id.menu_map:
-                menuSearch();
+                openPortalMap();
                 return true;
             default:
                 return true;
         }
     }
 
-    private void menuSearch() {
+    private void openPortalMap() {
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        Log.d(TAG, "currentItem: " + mViewPager.getCurrentItem());
         Portal p = (Portal) thePortalList.portals.get(mViewPager.getCurrentItem());
-        Log.d(TAG, "currentTitle: " + p.title);
-
         openGpsUrl(p.lat + "", p.lng+ "");
     }
     void openGpsUrl(String latitude, String longitude){

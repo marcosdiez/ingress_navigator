@@ -29,7 +29,8 @@
             <TextView
                 android:id="@+id/portal_position"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="@string/placeholder"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder"
                 android:layout_gravity="right" />
 
         </LinearLayout>
@@ -37,7 +38,8 @@
         <TextView
             android:id="@+id/portal_guid"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:text="@string/placeholder" />
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder" />
 
         <ImageView
             android:layout_width="fill_parent"
