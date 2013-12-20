@@ -85,15 +85,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
-
-
-
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -115,10 +111,15 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
     }
 
     private void menuSearch() {
-        openGpsUrl("45", "45");
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        Log.d(TAG, "currentItem: " + mViewPager.getCurrentItem());
+        Portal p = (Portal) thePortalList.portals.get(mViewPager.getCurrentItem());
+        Log.d(TAG, "currentTitle: " + p.title);
+
+        openGpsUrl(p.lat + "", p.lng+ "");
     }
-    void openGpsUrl(String longitude, String latitude){
-        String theURL = "http://maps.google.com/maps?daddr=" + longitude + "," + latitude;
+    void openGpsUrl(String latitude, String longitude){
+        String theURL = "http://maps.google.com/maps?daddr=" + latitude + "," + longitude ;
         Log.d(TAG, "Opening location:" + theURL);
         final Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(theURL));
@@ -211,21 +212,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
 
             txt_portal_title.setText(thePortal.title);
             txt_portal_guid.setText(thePortal.guid);
-            txt_portal_position.setText("Lat: " + thePortal.lat  + "," + thePortal.lng);
-
+            txt_portal_position.setText("GPS: " + thePortal.lat  + "," + thePortal.lng);
 
             String theImage = thePortal.GetImageFile();
             Drawable theImageDrawable = Drawable.createFromPath(theImage);
             image_portal.setImageDrawable(theImageDrawable);
-
-
-
-
-
-            //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-
-//            image_portal.setImageResource(R.drawable.ic_layer_chooser);
-
 
             return rootView;
         }

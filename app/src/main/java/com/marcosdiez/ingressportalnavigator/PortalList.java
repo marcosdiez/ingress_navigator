@@ -28,8 +28,8 @@ public class PortalList {
         Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
                 new String[]{"id", "guid", "title", "lat", "lng"},
 
-                null, // "title like ? ",
-                null, //new String[]{"%planta%"},
+                // null, null,
+                "title like ? ", new String[]{"%plan%"},
 
                 null, null, "title");
 
