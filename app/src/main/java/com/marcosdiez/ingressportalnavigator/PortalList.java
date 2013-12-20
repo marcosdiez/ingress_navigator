@@ -16,23 +16,24 @@ import java.util.Vector;
  * Created by Marcos on 12/19/13.
  */
 public class PortalList {
-
-    public static final String KEY_WORD = SearchManager.SUGGEST_COLUMN_TEXT_1;
-    public static final String KEY_DEFINITION = SearchManager.SUGGEST_COLUMN_TEXT_2;
-
-
     private final static String TAG = "ING_PortalList";
     public Vector portals = new Vector(1900);
     private final PortalsDbHelper mPortalDbHelper;
 
-    public PortalList(Context context){
+    private static PortalList thePortalList=null;
+
+    public static PortalList getPortalList(Context context){
+        if(thePortalList == null ){
+            thePortalList = new PortalList(context);
+        }
+        return thePortalList;
+    }
+
+    private PortalList(Context context){
         mPortalDbHelper = new PortalsDbHelper(context);
         loadPortalData(context, "igreja");
         Toast.makeText(context,"Loaded " + portals.size() + " portals", Toast.LENGTH_LONG).show();
     }
-
-
-
 
     public void loadPortalData(Context context, String titleHint) {
         int counter = 0;
@@ -66,8 +67,6 @@ public class PortalList {
     private static final HashMap<String,String> mColumnMap = buildColumnMap();
 
     private static HashMap<String,String> buildColumnMap() {
-        //public static final String KEY_WORD = SearchManager.SUGGEST_COLUMN_TEXT_1;
-        // public static final String KEY_DEFINITION = SearchManager.SUGGEST_COLUMN_TEXT_2;
 
         HashMap<String,String> map = new HashMap<String,String>();
         map.put(BaseColumns._ID, "id AS " + BaseColumns._ID);
@@ -108,7 +107,7 @@ public class PortalList {
      * @return Cursor over all words that match, or null if none found.
      */
     public Cursor getWordMatches(String query, String[] columns) {
-        String selection = KEY_WORD + " like ?";
+        String selection = DictionaryProvider.KEY_WORD + " like ?";
         String[] selectionArgs = new String[] {"%"+query+"%"};
 
         return query(selection, selectionArgs, columns);

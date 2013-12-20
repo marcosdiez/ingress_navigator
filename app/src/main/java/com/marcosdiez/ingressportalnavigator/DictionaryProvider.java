@@ -77,7 +77,7 @@ public class DictionaryProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mDictionary =  new PortalList(getContext()); // new DictionaryDatabase(getContext());
+        mDictionary =  PortalList.getPortalList(getContext());
         return true;
     }
 

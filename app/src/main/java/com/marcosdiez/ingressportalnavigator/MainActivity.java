@@ -57,7 +57,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         setContentView(R.layout.activity_main);
 
         // load Data
-        thePortalList = new PortalList(this);
+        thePortalList = PortalList.getPortalList(this);
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
