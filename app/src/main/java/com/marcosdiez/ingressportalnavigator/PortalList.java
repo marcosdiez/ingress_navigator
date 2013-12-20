@@ -27,7 +27,11 @@ public class PortalList {
 
         Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
                 new String[]{"id", "guid", "title", "lat", "lng"},
-                "title like ? ", new String[]{"%planta%"}, null, null, "title");
+
+                null, // "title like ? ",
+                null, //new String[]{"%planta%"},
+
+                null, null, "title");
 
         Log.d(TAG,"Loading portals...");
         if (theCursor.moveToFirst()) {

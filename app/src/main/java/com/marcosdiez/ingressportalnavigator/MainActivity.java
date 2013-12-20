@@ -1,5 +1,6 @@
 package com.marcosdiez.ingressportalnavigator;
 
+import java.io.File;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -8,20 +9,17 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,11 +39,15 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
      * The {@link ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
+    static PortalList thePortalList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // load Data
+        thePortalList = new PortalList(this);
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -81,25 +83,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
                             .setTabListener(this));
         }
 
-        loadPortalData();
-    }
 
-    private void loadPortalData() {
-        PortalList p = new PortalList(this);
-//        PortalsDbHelper p = new PortalsDbHelper(this);
-//        SQLiteDatabase portalsRo = p.getReadableDatabase();
-//
-//        Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
-//               new String[]{"id", "guid", "title", "lat", "lng"},
-//                "title like ? ", new String[]{"%planta%"}, null, null, "title");
-//        if (theCursor.moveToFirst()) {
-//            do {
-//                Log.d(TAG, theCursor.getString(0));
-//            } while (theCursor.moveToNext());
-//        }
-//        if (theCursor != null && !theCursor.isClosed()) {
-//            theCursor.close();
-//        }
+
     }
 
 
@@ -171,21 +156,22 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return thePortalList.portals.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-            }
-            return null;
+            return ((Portal) (thePortalList.portals.get(position))).title;
+//            switch (position) {
+//                case 0:
+//                    return getString(R.string.title_section1).toUpperCase(l);
+//                case 1:
+//                    return getString(R.string.title_section2).toUpperCase(l);
+//                case 2:
+//                    return getString(R.string.title_section3).toUpperCase(l);
+//            }
+//            return null;
         }
     }
 
@@ -225,25 +211,29 @@ public class MainActivity extends Activity implements ActionBar.TabListener {
             TextView txt_portal_position = (TextView) rootView.findViewById(R.id.portal_position);
 
 
-            txt_portal_title.setText("Portal Title");
-            txt_portal_guid.setText("Portal GUID");
-            txt_portal_position.setText("Portal Position");
+            int portalListID = getArguments().getInt(ARG_SECTION_NUMBER);
+
+            Portal thePortal = (Portal) thePortalList.portals.get(portalListID);
+
+            txt_portal_title.setText(thePortal.title);
+            txt_portal_guid.setText(thePortal.guid);
+            txt_portal_position.setText("Lat: " + thePortal.lat  + "," + thePortal.lng);
+
+
+            String theImage = thePortal.GetImageFile();
+            Drawable theImageDrawable = Drawable.createFromPath(theImage);
+            image_portal.setImageDrawable(theImageDrawable);
+
+
+
 
             //textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
 
-
-
-            image_portal.setImageResource(R.drawable.ic_layer_chooser);
+//            image_portal.setImageResource(R.drawable.ic_layer_chooser);
 
 
             return rootView;
         }
-
-
-
-
-
-
     }
 
 }
