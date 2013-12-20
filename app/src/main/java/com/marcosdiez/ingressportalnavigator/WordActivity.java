@@ -54,8 +54,8 @@ public class WordActivity extends Activity {
             TextView word = (TextView) findViewById(R.id.word);
             TextView definition = (TextView) findViewById(R.id.definition);
 
-            int wIndex = cursor.getColumnIndexOrThrow(DictionaryDatabase.KEY_WORD);
-            int dIndex = cursor.getColumnIndexOrThrow(DictionaryDatabase.KEY_DEFINITION);
+            int wIndex = cursor.getColumnIndexOrThrow(DictionaryProvider.KEY_WORD);
+            int dIndex = cursor.getColumnIndexOrThrow(DictionaryProvider.KEY_DEFINITION);
 
             word.setText(cursor.getString(wIndex));
             definition.setText(cursor.getString(dIndex));

@@ -42,6 +42,8 @@ public class DictionaryProvider extends ContentProvider {
 
     //private DictionaryDatabase mDictionary;
     private PortalList mDictionary;
+    public static final String KEY_WORD = SearchManager.SUGGEST_COLUMN_TEXT_1;
+    public static final String KEY_DEFINITION = SearchManager.SUGGEST_COLUMN_TEXT_2;
 
     // UriMatcher stuff
     private static final int SEARCH_WORDS = 0;
@@ -117,8 +119,8 @@ public class DictionaryProvider extends ContentProvider {
       query = query.toLowerCase();
       String[] columns = new String[] {
           BaseColumns._ID,
-          DictionaryDatabase.KEY_WORD,
-          DictionaryDatabase.KEY_DEFINITION,
+          KEY_WORD,
+          KEY_DEFINITION,
        /* SearchManager.SUGGEST_COLUMN_SHORTCUT_ID,
                         (only if you want to refresh shortcuts) */
           SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID};
@@ -130,8 +132,8 @@ public class DictionaryProvider extends ContentProvider {
       query = query.toLowerCase();
       String[] columns = new String[] {
           BaseColumns._ID,
-          DictionaryDatabase.KEY_WORD,
-          DictionaryDatabase.KEY_DEFINITION};
+          KEY_WORD,
+          KEY_DEFINITION};
 
       return mDictionary.getWordMatches(query, columns);
     }
@@ -139,8 +141,8 @@ public class DictionaryProvider extends ContentProvider {
     private Cursor getWord(Uri uri) {
       String rowId = uri.getLastPathSegment();
       String[] columns = new String[] {
-          DictionaryDatabase.KEY_WORD,
-          DictionaryDatabase.KEY_DEFINITION};
+          KEY_WORD,
+          KEY_DEFINITION};
 
       return mDictionary.getWord(rowId, columns);
     }
@@ -156,8 +158,8 @@ public class DictionaryProvider extends ContentProvider {
       String rowId = uri.getLastPathSegment();
       String[] columns = new String[] {
           BaseColumns._ID,
-          DictionaryDatabase.KEY_WORD,
-          DictionaryDatabase.KEY_DEFINITION,
+          KEY_WORD,
+          KEY_DEFINITION,
           SearchManager.SUGGEST_COLUMN_SHORTCUT_ID,
           SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID};
 

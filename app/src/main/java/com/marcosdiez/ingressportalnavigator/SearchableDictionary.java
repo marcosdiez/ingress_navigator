@@ -98,8 +98,8 @@ public class SearchableDictionary extends Activity {
             mTextView.setText(countString);
 
             // Specify the columns we want to display in the result
-            String[] from = new String[] { DictionaryDatabase.KEY_WORD,
-                                           DictionaryDatabase.KEY_DEFINITION };
+            String[] from = new String[] { DictionaryProvider.KEY_WORD,
+                    DictionaryProvider.KEY_DEFINITION };
 
             // Specify the corresponding layout elements where we want the columns to go
             int[] to = new int[] { R.id.word,
