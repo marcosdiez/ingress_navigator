@@ -24,7 +24,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 /**
  * Provides access to the dictionary database.
@@ -78,7 +77,8 @@ public class DictionaryProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        mDictionary =  PortalList.getPortalList(getContext());
+        Globals.setContext(getContext());
+        mDictionary =  PortalList.getPortalList();
         return true;
     }
 

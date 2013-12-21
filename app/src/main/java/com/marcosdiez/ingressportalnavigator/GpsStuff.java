@@ -1,20 +1,12 @@
 package com.marcosdiez.ingressportalnavigator;
 
-import android.content.Context;
-import android.location.Address;
+
 import android.location.Criteria;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Marcos on 12/20/13.
@@ -54,21 +46,19 @@ public class GpsStuff implements LocationListener {
     double distanceFromHereHelper(double toLat, double toLng){
         float result[] = { 0 };
         Location.distanceBetween(lat, lng, toLat, toLng, result);
-        //Log.d(TAG, "lat:" + lat + " " + " lng " + lng + " toLat " + toLat + " toLng " + toLng + " result "  + result[0]);
+        Log.d(TAG, "lat:" + lat + " " + " lng " + lng + " toLat " + toLat + " toLng " + toLng + " result "  + result[0]);
         return result[0];
     }
 
-    public static synchronized GpsStuff getMyGpsStuff(Context theContext){
+    public static synchronized GpsStuff getMyGpsStuff(){
         if(myGpsStuff==null){
-            myGpsStuff = new GpsStuff(theContext);
+            myGpsStuff = new GpsStuff();
         }
         return myGpsStuff;
     }
 
-    Context theContext;
-    private GpsStuff(Context theContext){
-        this.theContext=theContext;
-        locationManager = (LocationManager) theContext.getSystemService(Context.LOCATION_SERVICE);
+    private GpsStuff(){
+        locationManager = (LocationManager) Globals.getContext().getSystemService(Globals.getContext().LOCATION_SERVICE);
         provider=locationManager.getBestProvider(c, false);
     }
 

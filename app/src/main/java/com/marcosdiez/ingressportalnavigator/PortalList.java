@@ -9,9 +9,9 @@ import android.provider.BaseColumns;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Vector;
 
 /**
  * Created by Marcos on 12/19/13.
@@ -20,41 +20,40 @@ public class PortalList {
     private final static String TAG = "ING_PortalList";
     private static int initalNumPortals = 1900;
 
-    public Vector portalsByName = new Vector(initalNumPortals);
+    ArrayList<Portal> portalsByName = new ArrayList<Portal>(initalNumPortals);
     public LinkedHashMap<Integer,Portal> portalHashMap = new LinkedHashMap<Integer, Portal>(initalNumPortals);
-    public SortedPortalList<Portal> portalSortedList = new SortedPortalList();
-
+    ArrayList<Portal> portalsByLocation = new ArrayList<Portal>(initalNumPortals);
     private final PortalsDbHelper mPortalDbHelper;
-
     private static PortalList thePortalList=null;
 
-    public static synchronized PortalList getPortalList(Context context){
+    public static synchronized PortalList getPortalList(){
         if(thePortalList == null ){
-            thePortalList = new PortalList(context);
+            thePortalList = new PortalList();
         }
         return thePortalList;
     }
 
-    private PortalList(Context context){
-        mPortalDbHelper = new PortalsDbHelper(context);
-        loadPortalData(context, "");
-        Toast.makeText(context,"Loaded " + portalsByName.size() + " portalsByName", Toast.LENGTH_LONG).show();
+    private PortalList(){
+        mPortalDbHelper = new PortalsDbHelper();
+        loadPortalData();
+        Toast.makeText(Globals.getContext(),"Loaded " + portalsByName.size() + " portals", Toast.LENGTH_LONG).show();
     }
 
-    public void loadPortalData(Context context, String titleHint) {
+    private void loadPortalData() {
         int counter = 0;
         SQLiteDatabase portalsRo = mPortalDbHelper.getReadableDatabase();
 
         Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
                 new String[]{"id", "guid", "title", "lat", "lng"},
-                "title like ? ", new String[]{"%" + titleHint + "%"},
+                null , null,
+                // "title like ? ", new String[]{"%" + titleHint + "%"},
                 null, null, "title");
 
         Log.d(TAG,"Loading portals...");
         if (theCursor.moveToFirst()) {
             do {
                 Portal myPortal = new Portal(theCursor);
-                myPortal.tabId=counter;
+                myPortal.position =counter;
                 portalHashMap.put(myPortal.id,myPortal);
                 portalsByName.add(myPortal);
                 counter++;
@@ -67,6 +66,29 @@ public class PortalList {
         }
         portalsRo.close();
     }
+
+
+
+
+
+//    private void loadPortalByDistance(){
+//        SQLiteDatabase portalsRo = mPortalDbHelper.getReadableDatabase();
+//
+//        Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
+//                new String[]{"id", "guid", "title", "lat", "lng", "position"},
+//                null , null,
+//                // "title like ? ", new String[]{"%" + titleHint + "%"},
+//                null, null, "title");
+//
+//
+//        if (theCursor != null && !theCursor.isClosed()) {
+//            theCursor.close();
+//        }
+//        portalsRo.close();
+//    }
+
+
+
 
     ///////////////////////// SEARCH BLOAT
     private static final HashMap<String,String> mColumnMap = buildColumnMap();

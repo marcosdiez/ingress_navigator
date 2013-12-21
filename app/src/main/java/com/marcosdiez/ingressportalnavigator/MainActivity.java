@@ -1,9 +1,7 @@
 package com.marcosdiez.ingressportalnavigator;
 
-import java.util.List;
-
-import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -12,8 +10,8 @@ import android.app.SearchableInfo;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class MainActivity extends Activity implements ActionBar.TabListener, SearchView.OnQueryTextListener {
     private final static String TAG = "ING_MainActivity";
@@ -43,19 +43,18 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
      */
     ViewPager mViewPager;
     static PortalList thePortalList;
-    public static Activity thisActivity;
     static SeekBar seek_portals;
     SearchView mSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        thisActivity = this;
+        Globals.setContext(this);
 
         setContentView(R.layout.activity_main);
 
         // load Data
-        thePortalList = PortalList.getPortalList(this);
+        thePortalList = PortalList.getPortalList();
 
         prepareSeekBar();
 
@@ -121,14 +120,14 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             //showResults(query);
         }
     }
-    
+
 
     private void LoadPortalByPosition(int portalPosition){
         mViewPager.setCurrentItem(portalPosition, false);
     }
 
     private void LoadPortalById(int portalId) {
-        int tabId = thePortalList.portalHashMap.get(portalId).tabId;
+        int tabId = thePortalList.portalHashMap.get(portalId).position;
         if(tabId > 0 ){
             LoadPortalByPosition(tabId);
         }
@@ -320,13 +319,12 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
             Portal thePortal = (Portal) thePortalList.portalsByName.get(portalListID);
 
-            seek_portals.setProgress(thePortal.tabId);
+            seek_portals.setProgress(thePortal.position);
             txt_portal_title.setText(thePortal.title);
             txt_portal_guid.setText(thePortal.guid);
             txt_portal_position.setText("GPS: " + thePortal.lat  + "," + thePortal.lng);
 
-
-            String distance = GpsStuff.getMyGpsStuff(thisActivity).distanceFromHereStr(thePortal.lat, thePortal.lng);
+            String distance = GpsStuff.getMyGpsStuff().distanceFromHereStr(thePortal.lat, thePortal.lng);
             txt_portal_distance.setText("Distance: " + distance  );
 
             String theImage = thePortal.GetImageFile();
