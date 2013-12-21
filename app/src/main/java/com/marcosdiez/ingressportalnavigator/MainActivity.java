@@ -79,7 +79,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         });
 
 //        mStatusView = (TextView) findViewById(R.id.status_text);
-        // loadTabs(actionBar);
+        loadTabs(actionBar);
 
 
         handleIntent(getIntent());
