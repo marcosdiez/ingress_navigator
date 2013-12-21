@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements ActionBar.TabListener, SearchView.OnQueryTextListener {
@@ -43,7 +44,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
     ViewPager mViewPager;
     static PortalList thePortalList;
     public static Activity thisActivity;
-
+    static SeekBar seek_portals;
     SearchView mSearchView;
 
     @Override
@@ -56,6 +57,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         // load Data
         thePortalList = PortalList.getPortalList(this);
 
+        prepareSeekBar();
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
@@ -65,6 +68,29 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         handleIntent(getIntent());
+    }
+
+    private void prepareSeekBar() {
+        seek_portals = (SeekBar) findViewById(R.id.seek_portals);
+        seek_portals.setMax(thePortalList.portalsByName.size());
+        seek_portals.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int portalId, boolean fromTouch) {
+                if(fromTouch){
+                    LoadPortalByPosition(portalId);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
 
@@ -87,10 +113,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             if(searchInfo!=null){
                 String portalIdStr = searchInfo.substring(searchInfo.lastIndexOf('/')+1);
                 int portalId = Integer.parseInt(portalIdStr);
-                int tabId = thePortalList.portalHashMap.get(portalId).tabId;
-                if(tabId > 0 ){
-                    mViewPager.setCurrentItem(tabId, false);
-                }
+                LoadPortalById(portalId);
             }
         } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             // handles a search query
@@ -98,6 +121,19 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             //showResults(query);
         }
     }
+    
+
+    private void LoadPortalByPosition(int portalPosition){
+        mViewPager.setCurrentItem(portalPosition, false);
+    }
+
+    private void LoadPortalById(int portalId) {
+        int tabId = thePortalList.portalHashMap.get(portalId).tabId;
+        if(tabId > 0 ){
+            LoadPortalByPosition(tabId);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -278,10 +314,13 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             TextView txt_portal_distance = (TextView) rootView.findViewById(R.id.portal_distance);
 
 
+
+
             int portalListID = getArguments().getInt(ARG_SECTION_NUMBER);
 
             Portal thePortal = (Portal) thePortalList.portalsByName.get(portalListID);
 
+            seek_portals.setProgress(thePortal.tabId);
             txt_portal_title.setText(thePortal.title);
             txt_portal_guid.setText(thePortal.guid);
             txt_portal_position.setText("GPS: " + thePortal.lat  + "," + thePortal.lng);
