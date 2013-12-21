@@ -1,8 +1,6 @@
 package com.marcosdiez.ingressportalnavigator;
 
-import java.io.File;
 import java.util.List;
-import java.util.Locale;
 
 import android.app.Activity;
 import android.app.ActionBar;
@@ -11,17 +9,12 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -86,8 +79,13 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         });
 
 //        mStatusView = (TextView) findViewById(R.id.status_text);
+        // loadTabs(actionBar);
 
 
+        handleIntent(getIntent());
+    }
+
+    private void loadTabs(ActionBar actionBar) {
         // For each of the sections in the app, add a tab to the action bar.
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
             // Create a tab with text corresponding to the page title defined by
@@ -99,7 +97,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
-        handleIntent(getIntent());
     }
 
     @Override
@@ -221,7 +218,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
     private void openPortalMap() {
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        Portal p = (Portal) thePortalList.portals.get(mViewPager.getCurrentItem());
+        Portal p = (Portal) thePortalList.portalsByName.get(mViewPager.getCurrentItem());
         openGpsUrl(p.lat + "", p.lng+ "");
     }
     void openGpsUrl(String latitude, String longitude){
@@ -266,12 +263,12 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return thePortalList.portals.size();
+            return thePortalList.portalsByName.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return ((Portal)thePortalList.portals.get(position)).title;
+            return ((Portal)thePortalList.portalsByName.get(position)).title;
         }
     }
 
@@ -314,7 +311,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
             int portalListID = getArguments().getInt(ARG_SECTION_NUMBER);
 
-            Portal thePortal = (Portal) thePortalList.portals.get(portalListID);
+            Portal thePortal = (Portal) thePortalList.portalsByName.get(portalListID);
 
             txt_portal_title.setText(thePortal.title);
             txt_portal_guid.setText(thePortal.guid);

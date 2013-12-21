@@ -18,8 +18,12 @@ import java.util.Vector;
  */
 public class PortalList {
     private final static String TAG = "ING_PortalList";
-    public Vector portals = new Vector(1900);
-    public LinkedHashMap<Integer,Portal> portalHashMap = new LinkedHashMap<Integer, Portal>(1900);
+    private static int initalNumPortals = 1900;
+
+    public Vector portalsByName = new Vector(initalNumPortals);
+    public LinkedHashMap<Integer,Portal> portalHashMap = new LinkedHashMap<Integer, Portal>(initalNumPortals);
+    public SortedPortalList<Portal> portalSortedList = new SortedPortalList();
+
     private final PortalsDbHelper mPortalDbHelper;
 
     private static PortalList thePortalList=null;
@@ -34,7 +38,7 @@ public class PortalList {
     private PortalList(Context context){
         mPortalDbHelper = new PortalsDbHelper(context);
         loadPortalData(context, "");
-        Toast.makeText(context,"Loaded " + portals.size() + " portals", Toast.LENGTH_LONG).show();
+        Toast.makeText(context,"Loaded " + portalsByName.size() + " portalsByName", Toast.LENGTH_LONG).show();
     }
 
     public void loadPortalData(Context context, String titleHint) {
@@ -52,7 +56,7 @@ public class PortalList {
                 Portal myPortal = new Portal(theCursor);
                 myPortal.tabId=counter;
                 portalHashMap.put(myPortal.id,myPortal);
-                portals.add(myPortal);
+                portalsByName.add(myPortal);
                 counter++;
             } while (theCursor.moveToNext());
         }

@@ -10,7 +10,7 @@ import java.io.File;
 /**
  * Created by Marcos on 12/19/13.
  */
-public class Portal {
+public class Portal implements Comparable<Portal> {
 
     public int id;
     public String guid;
@@ -18,6 +18,7 @@ public class Portal {
     public double lat;
     public double lng;
     public int tabId;
+    public float distanceSquare = 0;
 
     private static String TAG =  "ING_Portal";
 
@@ -34,14 +35,28 @@ public class Portal {
         // /storage/emulated/0/Android/data/com.marcosdiez.ingressportalnavigator/images/5fe1f3cd994c4651afc179d43b29b943.16.jpg
         String path = Environment.getExternalStorageDirectory() + "/Android/data/" +
                 MainActivity.thisActivity.getPackageName() + "/images/" + guid + ".jpg";
-
-
         Log.d(TAG, path);
-
         File imageFile = new File(path);
         if( imageFile.isFile() && imageFile.canRead()){
             return path;
         }
         return null;
+    }
+
+    double getDistanceSquare(double otherLat, double otherLng ){
+        double deltaLat = this.lat -  otherLat;
+        double deltaLng = this.lng -  otherLng;
+
+        return deltaLat*deltaLat + deltaLng*deltaLng;
+    }
+
+    public int compareTo(Portal other){
+        if( this.distanceSquare == other.distanceSquare ){
+            return 0;
+        }
+        if( this.distanceSquare > other.distanceSquare){
+            return 1;
+        }
+        return -1;
     }
 }
