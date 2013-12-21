@@ -140,6 +140,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         MenuItem searchItem = menu.findItem(R.id.action_search);
 
 
+        ss
         // Associate searchable configuration with the SearchView
         SearchManager searchManager =
                 (SearchManager) getSystemService(this.SEARCH_SERVICE);
