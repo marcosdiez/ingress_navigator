@@ -86,6 +86,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
     }
 
     private void loadTabs(ActionBar actionBar) {
+        Log.d(TAG,"Loading tabs...");
         // For each of the sections in the app, add a tab to the action bar.
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
             // Create a tab with text corresponding to the page title defined by
@@ -97,6 +98,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+        Log.d(TAG,"Tabs Loaded...");
     }
 
     @Override
