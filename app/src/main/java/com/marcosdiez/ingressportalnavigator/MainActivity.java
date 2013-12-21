@@ -56,10 +56,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         // load Data
         thePortalList = PortalList.getPortalList(this);
 
-        // Set up the action bar.
-        final ActionBar actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
@@ -68,38 +64,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        // When swiping between different sections, select the corresponding
-        // tab. We can also use ActionBar.Tab#select() to do this if we have
-        // a reference to the Tab.
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
-
-//        mStatusView = (TextView) findViewById(R.id.status_text);
-        loadTabs(actionBar);
-
-
         handleIntent(getIntent());
     }
 
-    private void loadTabs(ActionBar actionBar) {
-        Log.d(TAG,"Loading tabs...");
-        // For each of the sections in the app, add a tab to the action bar.
-        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by
-            // the adapter. Also specify this Activity object, which implements
-            // the TabListener interface, as the callback (listener) for when
-            // this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
-        }
-        Log.d(TAG,"Tabs Loaded...");
-    }
 
     @Override
     protected void onNewIntent(Intent intent) {
