@@ -127,7 +127,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
     }
 
     private void LoadPortalById(int portalId) {
-        int tabId = thePortalList.portalHashMap.get(portalId).position;
+        int tabId = thePortalList.portalHashMap.get(portalId).positionByName;
         if(tabId > 0 ){
             LoadPortalByPosition(tabId);
         }
@@ -319,7 +319,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
             Portal thePortal = (Portal) thePortalList.portalsByName.get(portalListID);
 
-            seek_portals.setProgress(thePortal.position);
+            seek_portals.setProgress(thePortal.positionByName);
             txt_portal_title.setText(thePortal.title);
             txt_portal_guid.setText(thePortal.guid);
             txt_portal_position.setText("GPS: " + thePortal.lat  + "," + thePortal.lng);

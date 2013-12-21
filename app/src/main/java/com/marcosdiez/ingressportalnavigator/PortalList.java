@@ -1,15 +1,16 @@
 package com.marcosdiez.ingressportalnavigator;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.location.Location;
 import android.provider.BaseColumns;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -23,6 +24,7 @@ public class PortalList {
     ArrayList<Portal> portalsByName = new ArrayList<Portal>(initalNumPortals);
     public LinkedHashMap<Integer,Portal> portalHashMap = new LinkedHashMap<Integer, Portal>(initalNumPortals);
     ArrayList<Portal> portalsByLocation = new ArrayList<Portal>(initalNumPortals);
+
     private final PortalsDbHelper mPortalDbHelper;
     private static PortalList thePortalList=null;
 
@@ -53,9 +55,11 @@ public class PortalList {
         if (theCursor.moveToFirst()) {
             do {
                 Portal myPortal = new Portal(theCursor);
-                myPortal.position =counter;
+
+                myPortal.positionByName =counter;
                 portalHashMap.put(myPortal.id,myPortal);
                 portalsByName.add(myPortal);
+                portalsByLocation.add(myPortal);
                 counter++;
             } while (theCursor.moveToNext());
         }
@@ -65,29 +69,23 @@ public class PortalList {
             theCursor.close();
         }
         portalsRo.close();
+        sortPortalsByDistance();
     }
 
+    public void sortPortalsByDistance(){
+        Location theLocation = GpsStuff.getMyGpsStuff().GetNewLocation();
+        double lat = theLocation.getLatitude();
+        double lng = theLocation.getLongitude();
 
-
-
-
-//    private void loadPortalByDistance(){
-//        SQLiteDatabase portalsRo = mPortalDbHelper.getReadableDatabase();
-//
-//        Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
-//                new String[]{"id", "guid", "title", "lat", "lng", "position"},
-//                null , null,
-//                // "title like ? ", new String[]{"%" + titleHint + "%"},
-//                null, null, "title");
-//
-//
-//        if (theCursor != null && !theCursor.isClosed()) {
-//            theCursor.close();
-//        }
-//        portalsRo.close();
-//    }
-
-
+        for(Portal p : portalsByLocation){
+            p.GetDistance(lat,lng);
+        }
+        Collections.sort(portalsByLocation);
+        int counter=0;
+        for(Portal p : portalsByLocation){
+            p.positionByDistance=counter++;
+        }
+    }
 
 
     ///////////////////////// SEARCH BLOAT

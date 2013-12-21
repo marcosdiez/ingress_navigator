@@ -19,7 +19,8 @@ public class GpsStuff implements LocationListener {
     Criteria c = new Criteria();
     String provider;
     Location location;
-
+    public double lat;
+    public double lng;
 
     public String distanceFromHereStr(double toLat, double toLng){
         double distance = distanceFromHere(toLat,toLng);
@@ -32,14 +33,18 @@ public class GpsStuff implements LocationListener {
         return Math.round(distance/1000) + "km";
     }
 
-    public double distanceFromHere(double toLat, double toLng){
-        //get location
-        location=locationManager.getLastKnownLocation(provider);
-        if(location == null ){
-            return 0;
+    public Location GetNewLocation(){
+        Location newLocation = locationManager.getLastKnownLocation(provider);
+        if(newLocation!=null){
+            location = newLocation;
         }
         lng=location.getLongitude();
         lat=location.getLatitude();
+        return location;
+    }
+
+    public double distanceFromHere(double toLat, double toLng){
+        GetNewLocation();
         return distanceFromHereHelper(toLat, toLng);
     }
 
@@ -62,8 +67,7 @@ public class GpsStuff implements LocationListener {
         provider=locationManager.getBestProvider(c, false);
     }
 
-    public double lat;
-    public double lng;
+
 
     @Override
     public void onLocationChanged(Location loc) {
