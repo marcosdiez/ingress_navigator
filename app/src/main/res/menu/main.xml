@@ -14,15 +14,22 @@
         android:orderInCategory="20"
         android:showAsAction="ifRoom|collapseActionView"
         />
-    <item
-        android:id="@+id/label_chooser"
-        android:icon="@drawable/label_chooser"
-        android:orderInCategory="30"
-        android:showAsAction="ifRoom"
-        android:title="@string/label_chooser">
-    </item>
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+
+    <item android:id="@+id/action_sort_by_distance"
+        android:title="@string/sort_by_distance"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:showAsAction="never"
+        android:checked="true"
+        android:checkable="true"
+        />
+
+    <item android:id="@+id/action_sort_by_name"
+        android:title="@string/sort_by_name"
+        android:orderInCategory="110"
+        android:showAsAction="never"
+        android:checked="false"
+        android:checkable="true"
+        />
+
 </menu>
+

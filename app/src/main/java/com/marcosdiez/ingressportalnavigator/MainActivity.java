@@ -71,7 +71,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
     private void prepareSeekBar() {
         seek_portals = (SeekBar) findViewById(R.id.seek_portals);
-        seek_portals.setMax(thePortalList.portalsByName.size());
+        seek_portals.setMax(thePortalList.size());
         seek_portals.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int portalId, boolean fromTouch) {
@@ -127,7 +127,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
     }
 
     private void LoadPortalById(int portalId) {
-        int tabId = thePortalList.portalHashMap.get(portalId).positionByName;
+        int tabId = thePortalList.getPortalById(portalId).positionByName;
         if(tabId > 0 ){
             LoadPortalByPosition(tabId);
         }
@@ -219,9 +219,21 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         }
     }
 
+
+    private static boolean sortByName = false;
+
+    private static Portal getPortalByScreenPosition(int pos){
+        if(sortByName){
+            return thePortalList.getPortalByName(pos);
+        }else{
+            return thePortalList.getPortalByDistance(pos);
+        }
+    }
+
+
     private void openPortalMap() {
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        Portal p = (Portal) thePortalList.portalsByName.get(mViewPager.getCurrentItem());
+        Portal p = getPortalByScreenPosition(mViewPager.getCurrentItem());
         openGpsUrl(p.lat + "", p.lng+ "");
     }
     void openGpsUrl(String latitude, String longitude){
@@ -266,12 +278,12 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return thePortalList.portalsByName.size();
+            return thePortalList.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return ((Portal)thePortalList.portalsByName.get(position)).title;
+            return getPortalByScreenPosition(position).title;
         }
     }
 
@@ -311,14 +323,12 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             TextView txt_portal_position = (TextView) rootView.findViewById(R.id.portal_position);
             TextView txt_portal_distance = (TextView) rootView.findViewById(R.id.portal_distance);
 
-
-
-
             int portalListID = getArguments().getInt(ARG_SECTION_NUMBER);
 
-            Portal thePortal = (Portal) thePortalList.portalsByName.get(portalListID);
+            Portal thePortal  = getPortalByScreenPosition(portalListID);
 
-            seek_portals.setProgress(thePortal.positionByName);
+            seek_portals.setProgress(thePortal.positionByDistance); // .positionByName);
+
             txt_portal_title.setText(thePortal.title);
             txt_portal_guid.setText(thePortal.guid);
             txt_portal_position.setText("GPS: " + thePortal.lat  + "," + thePortal.lng);

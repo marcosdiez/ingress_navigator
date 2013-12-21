@@ -66,10 +66,10 @@ public class Portal  implements Comparable<Portal>{
     public int compareTo(Portal otherPortal){
         double otherLastDistance = otherPortal.getLastDistance();
 
-        if(otherLastDistance > lastDistance){
+        if(otherLastDistance < lastDistance){
             return 1;
         }
-        if(otherLastDistance < lastDistance){
+        if(otherLastDistance > lastDistance){
             return -1;
         }
         return 0;

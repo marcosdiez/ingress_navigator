@@ -21,9 +21,9 @@ public class PortalList {
     private final static String TAG = "ING_PortalList";
     private static int initalNumPortals = 1900;
 
-    ArrayList<Portal> portalsByName = new ArrayList<Portal>(initalNumPortals);
-    public LinkedHashMap<Integer,Portal> portalHashMap = new LinkedHashMap<Integer, Portal>(initalNumPortals);
-    ArrayList<Portal> portalsByLocation = new ArrayList<Portal>(initalNumPortals);
+    private ArrayList<Portal> portalsByName = new ArrayList<Portal>(initalNumPortals);
+    private LinkedHashMap<Integer,Portal> portalById = new LinkedHashMap<Integer, Portal>(initalNumPortals);
+    private ArrayList<Portal> portalsByLocation = new ArrayList<Portal>(initalNumPortals);
 
     private final PortalsDbHelper mPortalDbHelper;
     private static PortalList thePortalList=null;
@@ -33,6 +33,22 @@ public class PortalList {
             thePortalList = new PortalList();
         }
         return thePortalList;
+    }
+
+    public int size(){
+        return portalsByName.size();
+    }
+
+    public Portal getPortalById(int id){
+        return portalById.get(id);
+    }
+
+    public Portal getPortalByDistance(int pos){
+        return portalsByLocation.get(pos);
+    }
+
+    public Portal getPortalByName(int pos){
+        return portalsByName.get(pos);
     }
 
     private PortalList(){
@@ -57,7 +73,7 @@ public class PortalList {
                 Portal myPortal = new Portal(theCursor);
 
                 myPortal.positionByName =counter;
-                portalHashMap.put(myPortal.id,myPortal);
+                portalById.put(myPortal.id,myPortal);
                 portalsByName.add(myPortal);
                 portalsByLocation.add(myPortal);
                 counter++;
