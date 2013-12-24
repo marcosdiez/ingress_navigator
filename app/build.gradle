@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        mavenLocal()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:0.7.+'
@@ -9,7 +9,7 @@ buildscript {
 apply plugin: 'android'
 
 repositories {
-    mavenLocal()
+    mavenCentral()
 }
 
 android {

@@ -15,21 +15,38 @@
         android:showAsAction="ifRoom|collapseActionView"
         />
 
-    <item android:id="@+id/action_sort_by_distance"
-        android:title="@string/sort_by_distance"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:checked="true"
-        android:checkable="true"
-        />
+    <!--<item android:id="@+id/action_sort_by_distance"-->
+        <!--android:title="@string/sort_by_distance"-->
+        <!--android:orderInCategory="100"-->
+        <!--android:showAsAction="never"-->
+        <!--android:checked="true"-->
+        <!--android:checkable="true"-->
+        <!--/>-->
 
-    <item android:id="@+id/action_sort_by_name"
-        android:title="@string/sort_by_name"
-        android:orderInCategory="110"
-        android:showAsAction="never"
-        android:checked="false"
-        android:checkable="true"
-        />
+    <!--<item android:id="@+id/action_sort_by_name"-->
+        <!--android:title="@string/sort_by_name"-->
+        <!--android:orderInCategory="110"-->
+        <!--android:showAsAction="never"-->
+        <!--android:checked="false"-->
+        <!--android:checkable="true"-->
+        <!--/>-->
+
+    <!--<group android:checkableBehavior="single" android:showAsAction="never"  >-->
+        <!--<item android:id="@+id/menu_2_choice_1" android:title="@string/sort_by_distance"  android:showAsAction="never" android:checked="true" />-->
+        <!--<item android:id="@+id/menu_2_choice_2" android:title="@string/sort_by_name"  android:showAsAction="never"  />-->
+    <!--</group>-->
+
+    <item android:id="@+id/menu_portal_sort_chooser"
+        android:title="@string/choose_how_to_sort"
+        android:icon="@drawable/label_chooser"
+        android:showAsAction="never">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item android:id="@+id/menu_portal_sort_distance" android:title="@string/sort_by_distance"  android:showAsAction="never" android:checked="true" />
+                <item android:id="@+id/menu_portal_sort_name" android:title="@string/sort_by_name"  android:showAsAction="never"  />
+            </group>
+        </menu>
+    </item>
 
 </menu>
 

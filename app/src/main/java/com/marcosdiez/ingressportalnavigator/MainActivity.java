@@ -45,6 +45,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
     static PortalList thePortalList;
     static SeekBar seek_portals;
     SearchView mSearchView;
+    static Portal lastChosenPortal = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         thePortalList = PortalList.getPortalList();
 
         prepareSeekBar();
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
@@ -76,7 +76,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             @Override
             public void onProgressChanged(SeekBar seekBar, int portalId, boolean fromTouch) {
                 if(fromTouch){
-                    LoadPortalByPosition(portalId);
+                    if(sortByName){
+                        LoadPortalById(portalId);
+                    }else{
+                        LoadPortalByPosition(portalId);
+                    }
                 }
             }
 
@@ -92,7 +96,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         });
     }
 
-
     @Override
     protected void onNewIntent(Intent intent) {
         // Because this activity has set launchMode="singleTop", the system calls this method
@@ -103,7 +106,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
     }
 
     private void handleIntent(Intent intent) {
-
         if( intent.getDataString() != null){
             Log.d(TAG, intent.getDataString());
         }
@@ -121,13 +123,18 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         }
     }
 
-
     private void LoadPortalByPosition(int portalPosition){
         mViewPager.setCurrentItem(portalPosition, false);
     }
 
     private void LoadPortalById(int portalId) {
-        int tabId = thePortalList.getPortalById(portalId).positionByName;
+        Portal thePortal = thePortalList.getPortalById(portalId);
+        int tabId;
+        if(sortByName){
+            tabId = thePortal.positionByName;
+        }else{
+            tabId = thePortal.positionByDistance;
+        }
         if(tabId > 0 ){
             LoadPortalByPosition(tabId);
         }
@@ -137,6 +144,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        prepareSortMenu(menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
 
         // Associate searchable configuration with the SearchView
@@ -145,49 +153,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.action_search).getActionView();
 
-        //searchView.setSuggestionsAdapter(
-        //searchView.setQueryHint(Html.fromHtml("<font color = #00aaaa>elefante</font>"));
-        //searchView.set
-
-
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 
-
-
-//        mSearchView = (SearchView) searchItem.getActionView();
-//        setupSearchView(searchItem);
         return true;
-    }
-
-    protected boolean isAlwaysExpanded() {
-        return false;
-    }
-
-    private void setupSearchView(MenuItem searchItem) {
-
-        if (isAlwaysExpanded()) {
-            mSearchView.setIconifiedByDefault(false);
-        } else {
-            searchItem.setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_IF_ROOM
-                    | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-        }
-        SearchManager searchManager = (SearchManager) getSystemService(this.SEARCH_SERVICE);
-        if (searchManager != null) {
-            List<SearchableInfo> searchables = searchManager.getSearchablesInGlobalSearch();
-
-            SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
-            for (SearchableInfo inf : searchables) {
-                if (inf.getSuggestAuthority() != null
-                        && inf.getSuggestAuthority().startsWith("applications")) {
-                    info = inf;
-                }
-            }
-
-            mSearchView.setSearchableInfo(info);
-        }
-
-        mSearchView.setOnQueryTextListener(this);
     }
 
     public boolean onQueryTextChange(String newText) {
@@ -219,6 +188,38 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         }
     }
 
+    private void prepareSortMenu(Menu menu){
+        if(menu!=null){
+            final MenuItem menuSortByDistance =  menu.findItem(R.id.menu_portal_sort_distance);
+            final MenuItem menuSortByName = menu.findItem(R.id.menu_portal_sort_name);
+
+            if(menuSortByDistance != null){
+                menuSortByDistance.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        sortByName=false;
+                        menuItem.setChecked(true);
+                        thePortalList.sortPortalsByDistance();
+                        // LoadPortalById(lastChosenPortal.id);
+                        seek_portals.setProgress(lastChosenPortal.positionByDistance);
+                        return true;
+                    }
+                });
+            }
+            if(menuSortByName != null){
+                menuSortByName.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        sortByName = true;
+                        menuItem.setChecked(true);
+                        //LoadPortalById(lastChosenPortal.id);
+                        seek_portals.setProgress(lastChosenPortal.positionByName);
+                        return true;
+                    }
+                });
+            }
+        }
+    }
 
     private static boolean sortByName = false;
 
@@ -326,8 +327,13 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             int portalListID = getArguments().getInt(ARG_SECTION_NUMBER);
 
             Portal thePortal  = getPortalByScreenPosition(portalListID);
+            lastChosenPortal=thePortal;
 
-            seek_portals.setProgress(thePortal.positionByDistance); // .positionByName);
+            if(sortByName){
+                seek_portals.setProgress(thePortal.positionByName); // .positionByName);
+            }else{
+                seek_portals.setProgress(thePortal.positionByDistance); // .positionByName);
+            }
 
             txt_portal_title.setText(thePortal.title);
             txt_portal_guid.setText(thePortal.guid);
