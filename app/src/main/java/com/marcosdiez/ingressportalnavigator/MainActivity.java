@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -323,6 +324,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             TextView txt_portal_guid  = (TextView) rootView.findViewById(R.id.portal_guid);
             TextView txt_portal_position = (TextView) rootView.findViewById(R.id.portal_position);
             TextView txt_portal_distance = (TextView) rootView.findViewById(R.id.portal_distance);
+            ProgressBar loading_spinner = (ProgressBar) rootView.findViewById(R.id.loading_spinner);
 
             int portalListID = getArguments().getInt(ARG_SECTION_NUMBER);
 
@@ -330,9 +332,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             lastChosenPortal=thePortal;
 
             if(sortByName){
-                seek_portals.setProgress(thePortal.positionByName); // .positionByName);
+                seek_portals.setProgress(thePortal.positionByName);
             }else{
-                seek_portals.setProgress(thePortal.positionByDistance); // .positionByName);
+                seek_portals.setProgress(thePortal.positionByDistance);
             }
 
             txt_portal_title.setText(thePortal.title);
@@ -342,12 +344,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             String distance = GpsStuff.getMyGpsStuff().distanceFromHereStr(thePortal.lat, thePortal.lng);
             txt_portal_distance.setText("Distance: " + distance  );
 
-            String theImage = thePortal.GetImageFile();
-            Drawable theImageDrawable = Drawable.createFromPath(theImage);
-            image_portal.setImageDrawable(theImageDrawable);
-
+            new PortalImageLoader(image_portal, loading_spinner, thePortal).loadImage();
             return rootView;
         }
     }
-
 }
