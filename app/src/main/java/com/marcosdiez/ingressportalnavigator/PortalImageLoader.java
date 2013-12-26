@@ -35,7 +35,7 @@ public class PortalImageLoader {
             Log.d(TAG,"Initializing Background Downloader for "+ this.thePortal.imageUrl);
             // do it in background
             loading_spinner.setVisibility(View.VISIBLE);
-            new BackgroundDownloader().execute(this);
+            new PortalImageLoaderHelper().execute(this);
         }
     }
 }

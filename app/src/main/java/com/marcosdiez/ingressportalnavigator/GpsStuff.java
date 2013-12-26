@@ -38,8 +38,10 @@ public class GpsStuff implements LocationListener {
         if(newLocation!=null){
             location = newLocation;
         }
-        lng=location.getLongitude();
-        lat=location.getLatitude();
+        if(location != null){
+            lng=location.getLongitude();
+            lat=location.getLatitude();
+        }
         return location;
     }
 

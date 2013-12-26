@@ -18,7 +18,7 @@ public class PortalsDbHelper extends SQLiteOpenHelper {
             "'guid' TEXT NOT NULL UNIQUE ,"+
             "'title' TEXT NOT NULL,"+
             "'imageUrl' TEXT,"+
-            "'imageDownloaded' INTEGER NOT NULL default 0 ,"+
+//            "'imageDownloaded' INTEGER NOT NULL default 0 ,"+
             "'lat' REAL NOT NULL default '0',"+
             "'lng' REAL NOT NULL default '0',"+
             "'like' INTEGER NOT NULL default 0 ,"+

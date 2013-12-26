@@ -51,12 +51,17 @@ public class PortalList {
         return portalsByName.get(pos);
     }
 
+    
     private PortalList(){
         mPortalDbHelper = new PortalsDbHelper();
+        loadDataFromJson();
         loadPortalData();
         Toast.makeText(Globals.getContext(),"Loaded " + portalsByName.size() + " portals", Toast.LENGTH_LONG).show();
     }
-
+    private void loadDataFromJson() {
+        String theJson = JsonLoader.readRawTextFile(R.raw.sample);
+        new JsonLoader().load(theJson);
+    }
     private void loadPortalData() {
         int counter = 0;
         SQLiteDatabase portalsRo = mPortalDbHelper.getReadableDatabase();
@@ -90,9 +95,13 @@ public class PortalList {
 
     public void sortPortalsByDistance(){
         Location theLocation = GpsStuff.getMyGpsStuff().GetNewLocation();
-        double lat = theLocation.getLatitude();
-        double lng = theLocation.getLongitude();
+        double lat = 0;
+        double lng = 0;
 
+        if(theLocation!=null){
+            lat = theLocation.getLatitude();
+            lng = theLocation.getLongitude();
+        }
         for(Portal p : portalsByLocation){
             p.GetDistance(lat,lng);
         }
@@ -113,7 +122,7 @@ public class PortalList {
                 BaseColumns._ID);
 
         map.put(SearchManager.SUGGEST_COLUMN_TEXT_1, "title AS " + SearchManager.SUGGEST_COLUMN_TEXT_1);
-        map.put(SearchManager.SUGGEST_COLUMN_TEXT_2, "guid AS " + SearchManager.SUGGEST_COLUMN_TEXT_2);
+        map.put(SearchManager.SUGGEST_COLUMN_TEXT_2, "'' AS " + SearchManager.SUGGEST_COLUMN_TEXT_2);
 
         map.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID, "id AS " +
                 SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);

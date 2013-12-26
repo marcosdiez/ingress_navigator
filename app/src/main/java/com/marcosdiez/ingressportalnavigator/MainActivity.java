@@ -52,7 +52,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Globals.setContext(this);
-
         setContentView(R.layout.activity_main);
 
         // load Data
@@ -68,7 +67,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         handleIntent(getIntent());
+
+
     }
+
+
 
     private void prepareSeekBar() {
         seek_portals = (SeekBar) findViewById(R.id.seek_portals);
