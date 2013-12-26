@@ -1,6 +1,8 @@
 package com.marcosdiez.ingressportalnavigator;
 
+import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Environment;
 import android.util.Log;
@@ -21,6 +23,7 @@ public class Portal  implements Comparable<Portal>{
     public int positionByName;
     public int positionByDistance;
     public double lastDistance = 0;
+    private String address=null;
 
 
     private static String TAG =  "ING_Portal";
@@ -32,6 +35,7 @@ public class Portal  implements Comparable<Portal>{
         this.imageUrl = theCursor.getString(3);
         this.lat = theCursor.getDouble(4);
         this.lng = theCursor.getDouble(5);
+        this.address = theCursor.getString(6);
         this.positionByName = -1;
         this.positionByDistance = -1;
     }
@@ -53,6 +57,32 @@ public class Portal  implements Comparable<Portal>{
     }
 
 
+    public String getAddress(){
+        if(this.address == null){
+            address = GpsStuff.getMyGpsStuff().locationToAddress(lat, lng);
+            if(address != null){
+                saveAddressToDb();
+            }
+        }
+        return address;
+    }
+
+    private void saveAddressToDb() {
+        Log.d(TAG, "Saving portal address to DB");
+        SQLiteDatabase portalsRw =  new PortalsDbHelper().getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("address", address);
+
+        String query = "UPDATE " + PortalsDbHelper.PORTAL_DATA_TABLE_NAME +
+                " SET address = ? " +
+                " WHERE id = ? ";
+
+        String args[] = { address , (id + "") };
+        Cursor cu = portalsRw.rawQuery(query, args );
+        cu.moveToFirst();
+        cu.close();
+        portalsRw.close();
+    }
 
 
     public String GetImageFile(){
@@ -75,7 +105,7 @@ public class Portal  implements Comparable<Portal>{
 
     public String getExpectedImageFolder() {
         return Environment.getExternalStorageDirectory() + "/Android/data/" +
-                    Globals.getContext().getPackageName() + "/images/";
+                Globals.getContext().getPackageName() + "/images/";
     }
 
     public int compareTo(Portal otherPortal){

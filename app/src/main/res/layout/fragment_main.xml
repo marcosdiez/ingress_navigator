@@ -43,7 +43,7 @@
             android:id="@+id/portal_guid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/placeholder"
+            android:text=""
             android:layout_weight="2"
             android:layout_gravity="top"/>
 

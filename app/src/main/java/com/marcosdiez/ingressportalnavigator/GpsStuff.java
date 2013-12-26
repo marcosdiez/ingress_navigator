@@ -1,12 +1,18 @@
 package com.marcosdiez.ingressportalnavigator;
 
 
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Marcos on 12/20/13.
@@ -44,6 +50,31 @@ public class GpsStuff implements LocationListener {
         }
         return location;
     }
+
+    public String locationToAddress(double lat, double lng){
+        Geocoder geocoder = new Geocoder(Globals.getContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+
+            if(addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
+                for(int i=0; i<returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+
+                return strReturnedAddress.toString();
+            }
+            else{
+                return "";
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return  null;
+        }
+    }
+
 
     public double distanceFromHere(double toLat, double toLng){
         GetNewLocation();

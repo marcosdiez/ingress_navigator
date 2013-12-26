@@ -2,12 +2,14 @@ package com.marcosdiez.ingressportalnavigator;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by Marcos on 12/19/13.
  */
 public class PortalsDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 2;
+    private static final String TAG = "PortalsDbHelper";
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "portals";
     public static final String PORTAL_DATA_TABLE_NAME = "PortalData";
     private static final String PORTAL_DATA_TABLE_CREATE =
@@ -18,12 +20,12 @@ public class PortalsDbHelper extends SQLiteOpenHelper {
             "'guid' TEXT NOT NULL UNIQUE ,"+
             "'title' TEXT NOT NULL,"+
             "'imageUrl' TEXT,"+
-//            "'imageDownloaded' INTEGER NOT NULL default 0 ,"+
             "'lat' REAL NOT NULL default '0',"+
             "'lng' REAL NOT NULL default '0',"+
             "'like' INTEGER NOT NULL default 0 ,"+
             "'target' INTEGER NOT NULL default 0 ,"+
-            "'hasKey' INTEGER NOT NULL default 0"+
+            "'hasKey' INTEGER NOT NULL default 0 , "+
+            "'address' TEXT default NULL"+
             ");";
 
 
@@ -36,8 +38,13 @@ public class PortalsDbHelper extends SQLiteOpenHelper {
         db.execSQL(PORTAL_DATA_TABLE_CREATE);
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
 
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase,  int oldVersion, int newVersion ) {
+        Log.d(TAG, "Upgrading SQLite DB from " + oldVersion + " to " + newVersion);
+
+        Log.d(TAG, "Upgrading SQLite DB to " + DATABASE_VERSION);
+        sqLiteDatabase.execSQL("ALTER TABLE PortalData ADD COLUMN 'address' TEXT default NULL;");
+        Log.d(TAG, "Upgrading SQLite DB completed...");
     }
 }

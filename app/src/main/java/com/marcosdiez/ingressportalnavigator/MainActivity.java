@@ -341,8 +341,15 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             }
 
             txt_portal_title.setText(thePortal.title);
-            txt_portal_guid.setText(thePortal.guid);
-            txt_portal_position.setText("GPS: " + thePortal.lat  + "," + thePortal.lng);
+            String x = thePortal.getAddress();
+            if(x != null){
+                txt_portal_guid.setText(x);
+            }else{
+                txt_portal_guid.setText("");
+            }
+
+            // txt_portal_guid.setText(thePortal.guid);
+            txt_portal_position.setText(thePortal.lat  + "," + thePortal.lng);
 
             String distance = GpsStuff.getMyGpsStuff().distanceFromHereStr(thePortal.lat, thePortal.lng);
             txt_portal_distance.setText("Distance: " + distance  );

@@ -83,9 +83,8 @@ public class PortalList {
         SQLiteDatabase portalsRo = mPortalDbHelper.getReadableDatabase();
 
         Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
-                new String[]{"id", "guid", "title", "imageUrl", "lat", "lng"},
+                new String[]{"id", "guid", "title", "imageUrl", "lat", "lng" , "address"},
                 null , null,
-                // "title like ? ", new String[]{"%" + titleHint + "%"},
                 null, null, "title");
 
         Log.d(TAG,"Loading portals...");
