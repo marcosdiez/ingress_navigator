@@ -58,11 +58,10 @@ public class GpsStuff implements LocationListener {
 
             if(addresses != null) {
                 Address returnedAddress = addresses.get(0);
-                StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
+                StringBuilder strReturnedAddress = new StringBuilder("");
                 for(int i=0; i<returnedAddress.getMaxAddressLineIndex(); i++) {
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
                 }
-
                 return strReturnedAddress.toString();
             }
             else{
