@@ -64,6 +64,9 @@ public class Portal  implements Comparable<Portal>{
                 saveAddressToDb();
             }
         }
+        if(address==null){
+            return "";
+        }
         return address;
     }
 

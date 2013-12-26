@@ -6,9 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
-import android.app.SearchableInfo;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
@@ -24,8 +22,6 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import java.util.List;
 
 public class MainActivity extends Activity implements ActionBar.TabListener, SearchView.OnQueryTextListener {
     private final static String TAG = "ING_MainActivity";
@@ -324,7 +320,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
             ImageView image_portal = (ImageView) rootView.findViewById(R.id.image_portal);
             TextView txt_portal_title = (TextView) rootView.findViewById(R.id.portal_title);
-            TextView txt_portal_guid  = (TextView) rootView.findViewById(R.id.portal_guid);
+            TextView txt_portal_address  = (TextView) rootView.findViewById(R.id.portal_address);
             TextView txt_portal_position = (TextView) rootView.findViewById(R.id.portal_position);
             TextView txt_portal_distance = (TextView) rootView.findViewById(R.id.portal_distance);
             ProgressBar loading_spinner = (ProgressBar) rootView.findViewById(R.id.loading_spinner);
@@ -341,12 +337,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             }
 
             txt_portal_title.setText(thePortal.title);
-            String x = thePortal.getAddress();
-            if(x != null){
-                txt_portal_guid.setText(x);
-            }else{
-                txt_portal_guid.setText("");
-            }
+            txt_portal_address.setText("");
 
             // txt_portal_guid.setText(thePortal.guid);
             txt_portal_position.setText(thePortal.lat  + "," + thePortal.lng);
@@ -355,6 +346,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             txt_portal_distance.setText("Distance: " + distance  );
 
             new PortalImageLoader(image_portal, loading_spinner, thePortal).loadImage();
+            new PortalAddressLoader(txt_portal_address).execute( new Portal[] { thePortal} );
             return rootView;
         }
     }
