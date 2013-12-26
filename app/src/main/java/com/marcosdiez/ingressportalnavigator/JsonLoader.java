@@ -77,6 +77,11 @@ public class JsonLoader {
             addDoubleToDb(portalJson, values, "lat");
             addDoubleToDb(portalJson, values, "lng");
 
+            String address = portalJson.optString("address");
+            if(address != null){
+                values.put("address" , address);
+            }
+
             long returnValue = 0;
             try{
                 returnValue = portalsRw.insert(PortalsDbHelper.PORTAL_DATA_TABLE_NAME, null, values);
