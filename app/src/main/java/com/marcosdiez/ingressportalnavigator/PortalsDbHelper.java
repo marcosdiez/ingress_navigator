@@ -9,7 +9,7 @@ import android.util.Log;
  */
 public class PortalsDbHelper extends SQLiteOpenHelper {
     private static final String TAG = "PortalsDbHelper";
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
     private static final String DATABASE_NAME = "portals";
     public static final String PORTAL_DATA_TABLE_NAME = "PortalData";
     private static final String PORTAL_DATA_TABLE_CREATE =
@@ -42,9 +42,19 @@ public class PortalsDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase,  int oldVersion, int newVersion ) {
         Log.d(TAG, "Upgrading SQLite DB from " + oldVersion + " to " + newVersion);
+        int currentVersion = oldVersion;
+
+
+        if(currentVersion < 10){
+            currentVersion = 10;
+            Log.d(TAG, "Upgrading SQLite DB to " + 10);
+            sqLiteDatabase.execSQL("ALTER TABLE PortalData ADD COLUMN 'address' TEXT default NULL;");
+        }
+
 
         Log.d(TAG, "Upgrading SQLite DB to " + DATABASE_VERSION);
-        sqLiteDatabase.execSQL("ALTER TABLE PortalData ADD COLUMN 'address' TEXT default NULL;");
+        sqLiteDatabase.execSQL("UPDATE PortalData SET 'address' = null WHERE address = '';");
+
         Log.d(TAG, "Upgrading SQLite DB completed...");
     }
 }

@@ -36,6 +36,9 @@ public class Portal  implements Comparable<Portal>{
         this.lat = theCursor.getDouble(4);
         this.lng = theCursor.getDouble(5);
         this.address = theCursor.getString(6);
+        if(this.address != null && this.address.equals("")){
+            this.address = null;
+        }
         this.positionByName = -1;
         this.positionByDistance = -1;
     }
@@ -64,7 +67,7 @@ public class Portal  implements Comparable<Portal>{
                 saveAddressToDb();
             }
         }
-        if(address==null){
+        if(address == null){
             return "";
         }
         return address;
