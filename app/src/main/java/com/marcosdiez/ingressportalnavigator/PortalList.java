@@ -1,6 +1,8 @@
 package com.marcosdiez.ingressportalnavigator;
 
 import android.app.SearchManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -51,13 +53,27 @@ public class PortalList {
         return portalsByName.get(pos);
     }
 
-    
     private PortalList(){
         mPortalDbHelper = new PortalsDbHelper();
-        loadDataFromJson();
+        loadDataFromJsonIfNecessary();
         loadPortalData();
         Toast.makeText(Globals.getContext(),"Loaded " + portalsByName.size() + " portals", Toast.LENGTH_LONG).show();
     }
+
+    private void loadDataFromJsonIfNecessary(){
+        SharedPreferences settings = Globals.getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        int myJsonVersion = 1;
+        Log.d(TAG, "APK json data version: "  + myJsonVersion + "/" + settings.getInt("jsonVersion" , 0 ));
+        if( settings.getInt("jsonVersion" , 0 ) < myJsonVersion ){
+            Log.d(TAG, "Loading portals from JSON");
+            loadDataFromJson();
+            SharedPreferences.Editor editor1 = settings.edit();
+            editor1.putInt("jsonVersion", myJsonVersion);
+            editor1.commit();
+        }
+    }
+
+
     private void loadDataFromJson() {
         String theJson = JsonLoader.readRawTextFile(R.raw.sample);
         new JsonLoader().load(theJson);
