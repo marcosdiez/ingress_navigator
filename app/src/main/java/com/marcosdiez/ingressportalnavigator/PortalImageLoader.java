@@ -38,7 +38,7 @@ public class PortalImageLoader extends AsyncTask<Void, Void, Void> {
     void loadImage(){
         String theImage = thePortal.getExpectedImageFile();
         File theImageFile = new File(theImage);
-        if(theImageFile.exists() && theImageFile.length() > ( 1024 * 1024 )){
+        if(theImageFile.exists() && theImageFile.length() > 1024){
             if(theImage != null){
                 Drawable theImageDrawable = Drawable.createFromPath(theImage);
                 image_portal.setImageDrawable(theImageDrawable);
