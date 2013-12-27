@@ -6,9 +6,11 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -17,11 +19,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class MainActivity extends Activity implements ActionBar.TabListener, SearchView.OnQueryTextListener {
     private final static String TAG = "ING_MainActivity";
@@ -180,6 +189,17 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         // as you specify a parent activity in AndroidManifest.xml.
         int itemId = item.getItemId();
         switch(itemId){
+            case R.id.menu_uncheck_all_portals:
+                thePortalList.uncheckAllPortals();
+                CheckBox checkbox_like = (CheckBox) findViewById(R.id.checkbox_export);
+                checkbox_like.setChecked(false);
+                return true;
+            case R.id.menu_export_portals:
+                exportCheckedPortals();
+                return true;
+            case R.id.menu_open_checked_portals_with_google_earth:
+                openGoogleEarth();
+                return true;
             case R.id.menu_map:
                 openPortalMap();
                 return true;
@@ -187,6 +207,54 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
                 return true;
         }
     }
+
+    private File createKmlFile(){
+        String output = thePortalList.makeKmlOfLikedPortals();
+        if(output == null){
+            Toast.makeText(Globals.getContext(),"No portals were chosen",Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        File outputDir = new File(Globals.getPublicWritableFolder());
+        try {
+            File outputFile = File.createTempFile("exported_portals", ".kml", outputDir);
+            outputFile.setReadable(true,false);
+            FileWriter out = new FileWriter(outputFile);
+            out.write(output);
+            out.flush();
+            out.close();
+            return outputFile;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void openGoogleEarth(){
+        File outputFile = createKmlFile();
+        if(outputFile==null){
+            return;
+        }
+        Uri earthURI = Uri.fromFile(outputFile);
+        Intent earthIntent = new Intent(android.content.Intent.ACTION_VIEW, earthURI);
+        startActivity(earthIntent);
+    }
+
+    private void exportCheckedPortals(){
+        File outputFile = createKmlFile();
+        if(outputFile == null){
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("application/vnd.google-earth.kml+xml");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "List of Portals");
+        intent.putExtra(Intent.EXTRA_TEXT,
+                thePortalList.makeTextOfLikedPortals());
+
+        Uri uri = Uri.fromFile(outputFile);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        startActivity(Intent.createChooser(intent, "Send email..."));
+    }
+
 
     private void prepareSortMenu(Menu menu){
         if(menu!=null){
@@ -324,10 +392,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             TextView txt_portal_position = (TextView) rootView.findViewById(R.id.portal_position);
             TextView txt_portal_distance = (TextView) rootView.findViewById(R.id.portal_distance);
             ProgressBar loading_spinner = (ProgressBar) rootView.findViewById(R.id.loading_spinner);
+            CheckBox checkbox_like = (CheckBox) rootView.findViewById(R.id.checkbox_export);
 
             int portalListID = getArguments().getInt(ARG_SECTION_NUMBER);
 
-            Portal thePortal  = getPortalByScreenPosition(portalListID);
+            final Portal thePortal  = getPortalByScreenPosition(portalListID);
             lastChosenPortal=thePortal;
 
             if(sortByName){
@@ -339,6 +408,16 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             txt_portal_title.setText(thePortal.title);
             txt_portal_address.setText("");
 
+
+            checkbox_like.setChecked(thePortal.getLike());
+            checkbox_like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CheckBox checkbox_like = (CheckBox) view;
+                    thePortal.setLike(checkbox_like.isChecked());
+                }
+            });
+
             // txt_portal_guid.setText(thePortal.guid);
             txt_portal_position.setText(thePortal.lat  + "," + thePortal.lng);
 
@@ -346,7 +425,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             txt_portal_distance.setText("Distance: " + distance  );
 
             new PortalImageLoader(image_portal, loading_spinner, thePortal).loadImage();
-            new PortalAddressLoader(txt_portal_address).execute( new Portal[] { thePortal} );
+            new PortalAddressLoader(txt_portal_address, thePortal).loadAddress();
+
             return rootView;
         }
     }

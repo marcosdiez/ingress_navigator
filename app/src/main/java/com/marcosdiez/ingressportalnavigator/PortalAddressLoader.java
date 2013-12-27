@@ -6,16 +6,27 @@ import android.widget.TextView;
 /**
  * Created by Marcos on 12/26/13.
  */
-public class PortalAddressLoader extends AsyncTask<Portal, Void, String> {
+public class PortalAddressLoader extends AsyncTask<Integer, Void, String> {
     TextView theTextView;
-    public PortalAddressLoader(TextView theTextView){
+    Portal thePortal;
+    public PortalAddressLoader(TextView theTextView, Portal thePortal){
         super();
         this.theTextView = theTextView;
+        this.thePortal = thePortal;
+    }
+
+
+    public void loadAddress(){
+        if(thePortal.hasAddress()){
+            theTextView.setText(thePortal.getAddress());
+        }else{
+            execute(0);
+        }
     }
 
     @Override
-    protected String doInBackground(Portal... portals) {
-        return portals[0].getAddress();
+    protected String doInBackground(Integer... whatever) {
+        return thePortal.getAddress();
     }
 
     protected void onPostExecute(String result) {

@@ -23,8 +23,9 @@ public class Portal  implements Comparable<Portal>{
     public int positionByName;
     public int positionByDistance;
     public double lastDistance = 0;
-    private String address=null;
+    boolean like = false;
 
+    private String address=null;
 
     private static String TAG =  "ING_Portal";
 
@@ -39,9 +40,11 @@ public class Portal  implements Comparable<Portal>{
         if(this.address != null && this.address.equals("")){
             this.address = null;
         }
+        this.like = (theCursor.getInt(7) == 1); // boolean
         this.positionByName = -1;
         this.positionByDistance = -1;
     }
+
 
     public double getLastDistance(){
         return lastDistance;
@@ -59,25 +62,26 @@ public class Portal  implements Comparable<Portal>{
         return lastDistance;
     }
 
+    public Boolean hasAddress(){
+        return address != null;
+    }
 
     public String getAddress(){
-        if(this.address == null){
-            address = GpsStuff.getMyGpsStuff().locationToAddress(lat, lng);
-            if(address != null){
-                saveAddressToDb();
-            }
+        if(address != null){
+            return address;
         }
+        address = GpsStuff.getMyGpsStuff().locationToAddress(lat, lng);
         if(address == null){
             return "";
+        }else{
+            saveAddressToDb();
+            return address;
         }
-        return address;
     }
 
     private void saveAddressToDb() {
         Log.d(TAG, "Saving portal address to DB");
         SQLiteDatabase portalsRw =  new PortalsDbHelper().getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("address", address);
 
         String query = "UPDATE " + PortalsDbHelper.PORTAL_DATA_TABLE_NAME +
                 " SET address = ? " +
@@ -88,6 +92,31 @@ public class Portal  implements Comparable<Portal>{
         cu.moveToFirst();
         cu.close();
         portalsRw.close();
+    }
+
+    public boolean getLike(){
+        return like;
+    }
+
+    public void setLike(boolean newLike){
+        if(newLike == like ){
+            return;
+        }
+        Log.d(TAG, "Saving portal " + title + " like to DB:" + newLike);
+        SQLiteDatabase portalsRw =  new PortalsDbHelper().getWritableDatabase();
+
+        String query = "UPDATE " + PortalsDbHelper.PORTAL_DATA_TABLE_NAME +
+                " SET like = ? " +
+                " WHERE id = ? ";
+
+        int likeValue = newLike ? 1 : 0;
+
+        String args[] = { likeValue + "" , (id + "") };
+        Cursor cu = portalsRw.rawQuery(query, args );
+        cu.moveToFirst();
+        cu.close();
+        portalsRw.close();
+        this.like=newLike;
     }
 
 
@@ -110,8 +139,7 @@ public class Portal  implements Comparable<Portal>{
     }
 
     public String getExpectedImageFolder() {
-        return Environment.getExternalStorageDirectory() + "/Android/data/" +
-                Globals.getContext().getPackageName() + "/images/";
+        return Globals.getPublicWritableFolder() + "/images/";
     }
 
     public int compareTo(Portal otherPortal){
@@ -125,4 +153,39 @@ public class Portal  implements Comparable<Portal>{
         }
         return 0;
     }
+
+    public String getGoogleMapsUrl(){
+        return "http://maps.google.com/maps?q=" + lat + "," + lng;
+    }
+
+    public String getIntelUrl(){
+        return "http://www.ingress.com/intel?ll=" + lat + "," + lng;
+    }
+
+    public String getDescription(){
+        String br = "\n";
+        return
+                title + br +
+                address + br +
+                imageUrl + br +
+                getGoogleMapsUrl() + br +
+                getIntelUrl();
+    }
+
+    public String getKmlPart(){
+        return "        <Placemark>\n" +
+                "                <name>"+title+"</name>\n" +
+                "                <description><![CDATA[\n" +
+                "                <a href=\"http://maps.google.com/maps?daddr="+lat+","+lng+"\">Open Google Maps</a>\n" +
+                address + "\n" +
+                "                <img src=\""+imageUrl+"\">\n" +
+                "                ]]></description>\n" +
+                "                <Point>\n" +
+                "                        <coordinates>"+lng+","+lat+",0</coordinates>\n" +
+                "                </Point>\n" +
+                "        </Placemark>\n";
+
+    }
+
+
 }

@@ -83,7 +83,7 @@ public class PortalList {
         SQLiteDatabase portalsRo = mPortalDbHelper.getReadableDatabase();
 
         Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
-                new String[]{"id", "guid", "title", "imageUrl", "lat", "lng" , "address"},
+                new String[]{"id", "guid", "title", "imageUrl", "lat", "lng" , "address" , "like" },
                 null , null,
                 null, null, "title");
 
@@ -222,4 +222,53 @@ public class PortalList {
     }
 
 
+    public void uncheckAllPortals() {
+        for( Portal thePortal: portalsByName){
+            thePortal.setLike(false);
+        }
+    }
+
+    public String makeTextOfLikedPortals(){
+        StringBuilder output = new StringBuilder();
+        String br = "\n";
+        output.append("List of Portals" + br + br+ br);
+        for( Portal thePortal: portalsByName){
+            if(thePortal.getLike()){
+                output.append(thePortal.getDescription());
+                output.append(br);
+                output.append(br);
+            }
+        }
+
+        output.append("The attached KML file can be opened with Google Maps");
+
+        return output.toString();
+    }
+
+    public String makeKmlOfLikedPortals(){
+        int counter=0;
+        StringBuilder output = new StringBuilder();
+        output.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n" +
+                "        <Document>\n" +
+                "                <Folder>\n" +
+                "                <name>Placemarks</name>\n" +
+                "                <open>0</open>\n");
+
+        for( Portal thePortal: portalsByName){
+            if(thePortal.getLike()){
+                output.append(thePortal.getKmlPart());
+                counter++;
+            }
+        }
+
+        output.append("                        </Folder>\n" +
+                "        </Document>\n" +
+                "</kml>\n");
+
+        if(counter == 0){
+            return null;
+        }
+        return output.toString();
+    }
 }

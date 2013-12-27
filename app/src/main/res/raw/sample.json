@@ -1,4 +1,4 @@
-[
+﻿[
 { "guid": "0003c3337fd8456eaef0d1a8658861e0.16", "title": "Horto Florestal", "imageUrl": "http://lh3.ggpht.com/Ra8nlZFxLLePYWiKE6vLFybesNR6qxjr0IRvEcOcTVyiw9HlZdZt0IYVYmqDUxbvwYt7h2Elv5v2CuqFE1T2CuUUbte2y8AjMQLeSP7Y1Khd8NE",  "lat": -23.459062, "lng": -46.633507 },
 { "guid": "000505fe66ae4234bf24fdc2a7ed2a89.16", "title": "Jesus Menino", "imageUrl": "http://lh5.ggpht.com/ejClDBqxOG1vaV8Mx7n-wwkVsL5Xz596tr2luvrKC4_NrNMuiwETYtSt8UZz2uF1c1IeKaOJHTE0tTW9NmGKVg",  "lat": -23.475949, "lng": -46.604182 },
 { "guid": "000b0d4336f64523a23978d1299c9a45.12", "title": "Obelisco do Ibirapuera-Mausolé", "imageUrl": "http://www.panoramio.com/photos/small/7003041.jpg",  "lat": -23.584734, "lng": -46.654728 },
@@ -1348,7 +1348,6 @@
 { "guid": "899e3d6d36b54f4eb6091aee78dbb722.12", "title": "Mãe Preta", "imageUrl": "http://www.panoramio.com/photos/small/7114319.jpg",  "lat": -23.543112, "lng": -46.638256 },
 { "guid": "89a8c17ebb364fe185d4a27d870c0474.16", "title": "Arnaldo Vieira de Carvalho", "imageUrl": "http://lh4.ggpht.com/qeLQlUSs56Le4J5uabRbKBZ61Lmy_yI-gp9KyxGJlziHJUfxxFcu6LPAU47gzhuKFp3JLvr7LVy7d4iCIvY",  "lat": -23.542772, "lng": -46.650009 },
 { "guid": "89af17b249f74212990b8213f15c27d6.11", "title": "Escultura sem nome", "imageUrl": "http://lh3.ggpht.com/seqhZKR-371su3655wBkguTpiHv2FuiOJj-cdOK7Q-Hp3S58EV1ddbM2qk6VHUFFy42zD_MRBfGMIGni2fZyB449zoa9QBBVZNBSG9qDxk2afkk",  "lat": -23.562401, "lng": -46.656106 },
-{ "guid": "89f99aef3f7041c99e981dc576065c42.16", "title": "Casinha Dos Livros UNASP ", "imageUrl": "http://lh4.ggpht.com/LsNpX2Q8OW0SDAzCUPuEXD9LtxEZo46BEXY2H2PPuVE79dDb2rvbMOp91q8dCbMy7s0Q-fq7JnzAtjaEBNs",  "lat": -23.667624, "lng": -46.780172 },
 { "guid": "89f99aef3f7041c99e981dc576065c42.16", "title": "Casinha Dos Livros UNASP", "imageUrl": "http://lh4.ggpht.com/LsNpX2Q8OW0SDAzCUPuEXD9LtxEZo46BEXY2H2PPuVE79dDb2rvbMOp91q8dCbMy7s0Q-fq7JnzAtjaEBNs",  "lat": -23.667624, "lng": -46.780172 },
 { "guid": "8a16d00ba49848e8b8218535bd4e79d8.16", "title": "Graffiti - 06", "imageUrl": "http://lh4.ggpht.com/Gyuv1izLTVEW90VVyR-3Eop2gKHPUxCFBTVhNbhT2RuqcRm7CbebZoDhNnlAVZCCPdcAIy6C9X1JslaurS_0Qg",  "lat": -23.481182, "lng": -46.595591 },
 { "guid": "8a2787d0044e4e52b30c295f61e600ed.16", "title": "Escultura Ed Dakota", "imageUrl": "http://lh4.ggpht.com/rFvGfgLjFy0tIhsIQGZzNiNKTxfb6pgSFO6c7fGFCSXbdKDsZQ7IyioImZwaiJPGKBZBMLsmDOQwZLmHwjL6Ug",  "lat": -23.594516, "lng": -46.683841 },
@@ -1844,7 +1843,6 @@
 { "guid": "bab9dc81017a45d1a7f874f2e5a8c2b2.16", "title": "Colorido", "imageUrl": "http://lh4.ggpht.com/e26SZL3UJZezQRinRFhh9W_y5l9Fwtdd-fbHs4-cla7fJbNmK-8Xc0k0dTZwveT6GXUyxG6zRkYDVvYysaJk",  "lat": -23.540284, "lng": -46.590488 },
 { "guid": "babf56a2154a44518725087b8f2275bf.16", "title": "Escultura Jardim Paul Haris", "imageUrl": "http://lh3.ggpht.com/bohZCgJWgBSGp5fEB7PMb67C3RYBynQHOC0gJfXa5UMgrs7U9jZh3PLChUSuTqeiTrxqEION8-ufeDtLCzs",  "lat": -23.630945, "lng": -46.705413 },
 { "guid": "bac178ff421b482d87121c1e103feb17.16", "title": "Estátua Da Paróquia N. Senhora Do Carmo", "imageUrl": "http://lh3.ggpht.com/eVctqKIt2HpL47B3GHJfjIzu2FRLf26FzkQc7gYP-rt6ucP12-2rRd_pNEmC9KC3bPbs1S_k_ulYTyCN8KY",  "lat": -23.661016, "lng": -46.767835 },
-{ "guid": "bac178ff421b482d87121c1e103feb17.16", "title": "Paróquia N. Senhora Do Carmo", "imageUrl": "http://lh3.ggpht.com/eVctqKIt2HpL47B3GHJfjIzu2FRLf26FzkQc7gYP-rt6ucP12-2rRd_pNEmC9KC3bPbs1S_k_ulYTyCN8KY",  "lat": -23.661016, "lng": -46.767835 },
 { "guid": "baf2578aa27148189fb15610695b09cd.16", "title": "Oficina Cultural Oswald de Andrade", "imageUrl": "http://lh4.ggpht.com/Av5QTfW0Ipcp8joTc3GTnNr6FemZfav4gkjMhbHz3l_-i1YJLHCfuJL0YyjtYRj4Lbl8iO9J9QHCcuTkUEjQ",  "lat": -23.529213, "lng": -46.63765 },
 { "guid": "baf6c257d14742cda7018657af6b360f.16", "title": "Estação Da Lapa", "imageUrl": "http://lh4.ggpht.com/7LwBlnO1N4sYsN2D_x5qPwd9HJGA2e7ooor2nvqc5_fnFqji25Hukn-DfbKAF11WHC7Ozun9E2Mpo3rzo57ONQ",  "lat": -23.517732, "lng": -46.703971 },
 { "guid": "bafc8d4be88d49b6b9f2150cd3dbe2a1.16", "title": "Shield Builder Mural", "imageUrl": "http://lh3.ggpht.com/N9OqiMevUdhxDhgosFm-2sdowKp5zksJohA_13BkGbZN9Rwt8_8QBHQdosupKHImdABoWLEPlKVaWXlXCt3ccA",  "lat": -23.563895, "lng": -46.653217 },

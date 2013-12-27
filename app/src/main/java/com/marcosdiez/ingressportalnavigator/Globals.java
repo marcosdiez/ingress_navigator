@@ -1,6 +1,7 @@
 package com.marcosdiez.ingressportalnavigator;
 
 import android.content.Context;
+import android.os.Environment;
 
 /**
  * Created by Marcos on 12/21/13.
@@ -18,5 +19,10 @@ public class Globals {
     }
     public static boolean isContextNull(){
         return context==null;
+    }
+
+    public static String getPublicWritableFolder(){
+        return Environment.getExternalStorageDirectory() + "/Android/data/" +
+                Globals.getContext().getPackageName();
     }
 }

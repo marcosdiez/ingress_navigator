@@ -7,10 +7,11 @@
     <string name="title_section3">Section 3</string>
     <string name="action_settings">Settings</string>
 
+    <string name="export_choosen_portals">Export Choosen Portals</string>
+    <string name="uncheck_all_portals">Uncheck All Portals</string>
     <string name="choose_how_to_sort">Sort Order</string>
     <string name="sort_by_name">Sort By Name</string>
     <string name="sort_by_distance">Sort By Distance</string>
-
 
     <string name="menu_search">Search</string>
     <string name="menu_map">Navigate with GPS app</string>
@@ -20,10 +21,11 @@
     <string name="placeholder">placeholder</string>
     <string name="search_hint">Portal Name</string>
 
-
     <string name="search">search</string>
     <string name="search_instructions">search_instructions</string>
     <string name="no_results">no_results</string>
+    <string name="export">export</string>
+    <string name="open_checked_portals_with_google_earth">Open With Google Earth</string>
 
     <plurals name="search_results">
         <item quantity="one">%1$d result for \"%2$s\": </item>
