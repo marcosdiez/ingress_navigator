@@ -235,8 +235,17 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             return;
         }
         Uri earthURI = Uri.fromFile(outputFile);
-        Intent earthIntent = new Intent(android.content.Intent.ACTION_VIEW, earthURI);
-        startActivity(earthIntent);
+        Intent earthIntent = new Intent(Intent.ACTION_VIEW);
+        earthIntent.setDataAndType(earthURI, "application/vnd.google-earth.kml+xml");
+        // earthIntent.putExtra("com.google.earth.EXTRA.tour_feature_id", "my_track");
+
+//        earthIntent.setType("application/vnd.google-earth.kml+xml");
+//        earthIntent.putExtra(Intent.EXTRA_STREAM, earthURI);
+        try{
+            startActivity(earthIntent);
+        }catch( android.content.ActivityNotFoundException e){
+            Toast.makeText(Globals.getContext(),"Google Earth not installed ?",Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void exportCheckedPortals(){
@@ -244,14 +253,15 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         if(outputFile == null){
             return;
         }
+
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("application/vnd.google-earth.kml+xml");
         intent.putExtra(Intent.EXTRA_SUBJECT, "List of Portals");
         intent.putExtra(Intent.EXTRA_TEXT,
                 thePortalList.makeTextOfLikedPortals());
 
-        Uri uri = Uri.fromFile(outputFile);
-        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        Uri earthURI = Uri.fromFile(outputFile);
+        intent.putExtra(Intent.EXTRA_STREAM, earthURI);
         startActivity(Intent.createChooser(intent, "Send email..."));
     }
 

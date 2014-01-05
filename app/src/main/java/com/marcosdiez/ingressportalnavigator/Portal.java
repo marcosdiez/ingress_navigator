@@ -175,7 +175,7 @@ public class Portal  implements Comparable<Portal>{
     public String getKmlPart(){
         return "        <Placemark>\n" +
                 "                <name>"+title+"</name>\n" +
-                "                <description><![CDATA[\n" +
+                "                <description><![CDATA[\n" + title + "<br>" +
                 "                <a href=\"http://maps.google.com/maps?daddr="+lat+","+lng+"\">Open Google Maps</a>\n" +
                 address + "\n" +
                 "                <img src=\""+imageUrl+"\">\n" +

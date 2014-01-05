@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Created by Marcos on 12/19/13.
@@ -62,7 +63,7 @@ public class PortalList {
 
     private void loadDataFromJsonIfNecessary(){
         SharedPreferences settings = Globals.getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
-        int myJsonVersion = 1;
+        int myJsonVersion = 5;
         Log.d(TAG, "APK json data version: "  + myJsonVersion + "/" + settings.getInt("jsonVersion" , 0 ));
         if( settings.getInt("jsonVersion" , 0 ) < myJsonVersion ){
             Log.d(TAG, "Loading portals from JSON");
@@ -72,7 +73,6 @@ public class PortalList {
             editor1.commit();
         }
     }
-
 
     private void loadDataFromJson() {
         String theJson = JsonLoader.readRawTextFile(R.raw.sample);
@@ -245,6 +245,37 @@ public class PortalList {
         return output.toString();
     }
 
+    public void makePoligon(StringBuilder output,  ArrayList<Portal> likedPortals){
+        output.append("<Placemark>\n");
+        output.append("\t<name>The Field</name>\n");
+        output.append("\t\t<Polygon>\n");
+        output.append("\t\t\t<tessellate>1</tessellate>\n");
+        output.append("\t\t\t<outerBoundaryIs>\n");
+        output.append("\t\t\t<LinearRing>\n");
+        output.append("\t\t\t<coordinates>\n");
+
+        for( Portal thePortal : likedPortals){
+            addASinglePortal(output, thePortal);
+        }
+
+        addASinglePortal(output, likedPortals.get(0));
+
+//        -48.95054950770835,-21.30333748672975,0 -50.04440067124863,-20.46703351296742,0 -51.68390301748836,-21.28419204803828,0 -48.95054950770835,-21.30333748672975,0
+        output.append("\t\t\t</coordinates>\n");
+        output.append("\t\t\t</LinearRing>\n");
+        output.append("\t\t\t</outerBoundaryIs>\n");
+        output.append("\t\t\t</Polygon>\n");
+        output.append("\t\t\t</Placemark>\n");
+    }
+
+    private void addASinglePortal(StringBuilder output, Portal thePortal) {
+        output.append(thePortal.lng);
+        output.append(",");
+        output.append(thePortal.lat);
+        output.append(",0 ");
+    }
+
+
     public String makeKmlOfLikedPortals(){
         int counter=0;
         StringBuilder output = new StringBuilder();
@@ -255,11 +286,17 @@ public class PortalList {
                 "                <name>Placemarks</name>\n" +
                 "                <open>0</open>\n");
 
+        ArrayList<Portal> likedPortals = new ArrayList<Portal>();
+
         for( Portal thePortal: portalsByName){
             if(thePortal.getLike()){
                 output.append(thePortal.getKmlPart());
+                likedPortals.add(thePortal);
                 counter++;
             }
+        }
+        if(likedPortals.size() == 3){
+            makePoligon(output,likedPortals);
         }
 
         output.append("                        </Folder>\n" +
