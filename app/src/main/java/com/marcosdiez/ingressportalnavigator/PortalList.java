@@ -231,16 +231,22 @@ public class PortalList {
     public String makeTextOfLikedPortals(){
         StringBuilder output = new StringBuilder();
         String br = "\n";
+
+        GoogleMapsUrl multiUrl = new GoogleMapsUrl();
+
         output.append("List of Portals" + br + br+ br);
         for( Portal thePortal: portalsByName){
             if(thePortal.getLike()){
+                multiUrl.addTarget(thePortal);
                 output.append(thePortal.getDescription());
                 output.append(br);
                 output.append(br);
             }
         }
 
-        output.append("The attached KML file can be opened with Google Maps");
+        output.append("You can navigate to all portals though your PC's google maps following this URL:\n" + multiUrl.getTargetUrl() + "\n\n" );
+
+        output.append("The attached KML file can be opened with Google Earth");
 
         return output.toString();
     }
