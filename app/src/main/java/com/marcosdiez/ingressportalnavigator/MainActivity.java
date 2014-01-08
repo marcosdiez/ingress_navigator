@@ -203,6 +203,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             case R.id.menu_map:
                 openPortalMap();
                 return true;
+            case R.id.menu_share:
+                menuShare();
+                return true;
             default:
                 return true;
         }
@@ -309,19 +312,26 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         }
     }
 
+    private void menuShare(){
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        Portal p = getPortalByScreenPosition(mViewPager.getCurrentItem());
+        String theUrl = p.getIntelUrl();
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, theUrl);
+        startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.menu_share)));
+    }
 
     private void openPortalMap() {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         Portal p = getPortalByScreenPosition(mViewPager.getCurrentItem());
-        openGpsUrl(p.lat + "", p.lng+ "");
-    }
-    void openGpsUrl(String latitude, String longitude){
-        String theURL = "http://maps.google.com/maps?daddr=" + latitude + "," + longitude ;
-        Log.d(TAG, "Opening location:" + theURL);
+        String theUrl = p.getGoogleMapsUrl();
+        Log.d(TAG, "Opening location:" + theUrl);
         final Intent intent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(theURL));
+                Uri.parse(theUrl));
         startActivity(intent);
     }
+
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in

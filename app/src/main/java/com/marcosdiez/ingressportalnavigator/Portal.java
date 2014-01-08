@@ -159,7 +159,7 @@ public class Portal  implements Comparable<Portal>{
     }
 
     public String getIntelUrl(){
-        return "http://www.ingress.com/intel?ll=" + lat + "," + lng;
+        return "http://www.ingress.com/intel?ll=" + lat + "," + lng + "?pll="+ lat + "," + lng;
     }
 
     public String getDescription(){

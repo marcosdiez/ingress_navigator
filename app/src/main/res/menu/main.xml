@@ -15,6 +15,12 @@
         android:showAsAction="always"
         />
 
+    <item android:id="@+id/menu_share"
+        android:title="@string/menu_share"
+        android:icon="@drawable/share"
+        android:orderInCategory="25"
+        />
+
     <item android:id="@+id/menu_export_portals"
         android:title="@string/export_choosen_portals"
         android:orderInCategory="30"
