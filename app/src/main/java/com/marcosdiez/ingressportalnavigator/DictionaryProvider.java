@@ -40,8 +40,17 @@ public class DictionaryProvider extends ContentProvider {
     public static final String DEFINITION_MIME_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE +
                                                        "/vnd.marcosdiez.ingressportalnavigator";
 
-    //private DictionaryDatabase mDictionary;
-    private PortalList mDictionary;
+    private PortalList getMDictionary(){
+        // this is needed because this class is loaded when the app is launched
+        // and we do lazy evaluation for the PortalList, or else it get's
+        // loaded in the UI Thread
+        if(mmDictionary == null){
+           mmDictionary =  PortalList.getPortalList();
+        }
+        return mmDictionary;
+    }
+
+    private PortalList mmDictionary=null;
     public static final String KEY_WORD = SearchManager.SUGGEST_COLUMN_TEXT_1;
     public static final String KEY_DEFINITION = SearchManager.SUGGEST_COLUMN_TEXT_2;
 
@@ -78,7 +87,6 @@ public class DictionaryProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         Globals.setContext(getContext());
-        mDictionary =  PortalList.getPortalList();
         return true;
     }
 
@@ -126,7 +134,7 @@ public class DictionaryProvider extends ContentProvider {
                         (only if you want to refresh shortcuts) */
           SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID};
 
-      return mDictionary.getWordMatches(query, columns);
+      return getMDictionary().getWordMatches(query, columns);
     }
 
     private Cursor search(String query) {
@@ -136,7 +144,7 @@ public class DictionaryProvider extends ContentProvider {
                 KEY_WORD,
                 KEY_DEFINITION};
 
-        return mDictionary.getWordMatches(query, columns);
+        return getMDictionary().getWordMatches(query, columns);
     }
 
     private Cursor getWord(Uri uri) {
@@ -145,7 +153,7 @@ public class DictionaryProvider extends ContentProvider {
                 KEY_WORD,
                 KEY_DEFINITION};
 
-        return mDictionary.getWord(rowId, columns);
+        return getMDictionary().getWord(rowId, columns);
     }
 
     private Cursor refreshShortcut(Uri uri) {
@@ -164,7 +172,7 @@ public class DictionaryProvider extends ContentProvider {
           SearchManager.SUGGEST_COLUMN_SHORTCUT_ID,
           SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID};
 
-      return mDictionary.getWord(rowId, columns);
+      return getMDictionary().getWord(rowId, columns);
     }
 
     /**

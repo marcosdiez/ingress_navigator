@@ -60,6 +60,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
         // load Data
         thePortalList = PortalList.getPortalList();
+        Toast.makeText(Globals.getContext(),"Loaded " + thePortalList.size() + " portals", Toast.LENGTH_LONG).show();
 
         prepareSeekBar();
         // Create the adapter that will return a fragment for each of the three

@@ -6,7 +6,6 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="action_settings">Settings</string>
-
     <string name="export_choosen_portals">Export Choosen Portals</string>
     <string name="uncheck_all_portals">Uncheck All Portals</string>
     <string name="choose_how_to_sort">Sort Order</string>
@@ -15,8 +14,6 @@
     <string name="menu_share_googlemaps_url">Share Maps URL</string>
     <string name="menu_share_intel_url">Share Intel URL</string>
     <string name="open_intel_url">Open Intel URL</string>
-
-
     <string name="menu_search">Search</string>
     <string name="menu_map">Navigate with GPS app</string>
     <string name="label_chooser">Label Chooser</string>
@@ -24,7 +21,6 @@
     <string name="drawer_close">Hide navigation menu</string>
     <string name="placeholder">placeholder</string>
     <string name="search_hint">Portal Name</string>
-
     <string name="search">search</string>
     <string name="search_instructions">search_instructions</string>
     <string name="no_results">no_results</string>
@@ -35,5 +31,9 @@
         <item quantity="one">%1$d result for \"%2$s\": </item>
         <item quantity="other">%1$d results for \"%2$s\": </item>
     </plurals>
+
+    <string name="title_activity_loader">Android Portal Navigator</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_portal_loader">Loading Portals...</string>
 
 </resources>

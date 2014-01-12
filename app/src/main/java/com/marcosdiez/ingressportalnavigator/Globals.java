@@ -13,7 +13,7 @@ public class Globals {
     }
     public static Context getContext(){
         if(context == null){
-            throw new NullPointerException("contex");
+            throw new NullPointerException("Context");
         }
         return context;
     }

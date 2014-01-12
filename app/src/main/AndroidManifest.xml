@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.marcosdiez.ingressportalnavigator" android:versionCode="7"
-    android:versionName="1.06" >
+    package="com.marcosdiez.ingressportalnavigator"
+    android:versionCode="8"
+    android:versionName="1.07" >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -11,38 +12,46 @@
 
     <application
         android:allowBackup="false"
+        android:debuggable="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:debuggable="false">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:launchMode="singleTop" >
 
             <!-- Receives the search request. -->
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
-                <!-- No category needed, because the Intent will specify this class component-->
+                <!-- No category needed, because the Intent will specify this class component -->
             </intent-filter>
 
             <!-- Points to searchable meta data. -->
-            <meta-data android:name="android.app.searchable"
+            <meta-data
+                android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
 
         <!-- Provides search suggestions for words and their definitions. -->
-        <provider android:name=".DictionaryProvider"
+        <provider
+            android:name=".DictionaryProvider"
             android:authorities="com.marcosdiez.ingressportalnavigator.DictionaryProvider" />
 
         <!-- Points to searchable activity so the whole app can invoke search. -->
-        <meta-data android:name="android.app.default_searchable"
+        <meta-data
+            android:name="android.app.default_searchable"
             android:value=".SearchableDictionary" />
 
+        <activity
+            android:name=".PortalLoaderActivity"
+            android:label="@string/title_activity_portal_loader" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

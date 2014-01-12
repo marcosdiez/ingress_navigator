@@ -58,7 +58,7 @@ public class PortalList {
         mPortalDbHelper = new PortalsDbHelper();
         loadDataFromJsonIfNecessary();
         loadPortalData();
-        Toast.makeText(Globals.getContext(),"Loaded " + portalsByName.size() + " portals", Toast.LENGTH_LONG).show();
+        // Toast.makeText(Globals.getContext(),"Loaded " + portalsByName.size() + " portals", Toast.LENGTH_LONG).show();
     }
 
     private void loadDataFromJsonIfNecessary(){
