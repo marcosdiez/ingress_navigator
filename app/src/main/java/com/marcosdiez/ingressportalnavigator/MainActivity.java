@@ -81,19 +81,14 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         seek_portals.setMax(thePortalList.size());
         seek_portals.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int portalId, boolean fromTouch) {
+            public void onProgressChanged(SeekBar seekBar, int seekBarPosition, boolean fromTouch) {
                 if(fromTouch){
-                    if(sortByName){
-                        LoadPortalById(portalId);
-                    }else{
-                        LoadPortalByPosition(portalId);
-                    }
+                    LoadPortalByPosition(seekBarPosition);
                 }
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
