@@ -14,6 +14,7 @@
     <string name="sort_by_distance">Sort By Distance</string>
     <string name="menu_share_googlemaps_url">Share Maps URL</string>
     <string name="menu_share_intel_url">Share Intel URL</string>
+    <string name="open_intel_url">Open Intel URL</string>
 
 
     <string name="menu_search">Search</string>

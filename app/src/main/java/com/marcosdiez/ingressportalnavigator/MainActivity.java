@@ -71,8 +71,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         handleIntent(getIntent());
-
-
     }
 
 
@@ -199,8 +197,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             case R.id.menu_open_checked_portals_with_google_earth:
                 openGoogleEarth();
                 return true;
+            case R.id.open_intel_url:
+                openUrl(getCurrentPortal().getIntelUrl());
+                return true;
             case R.id.menu_map:
-                openPortalMap();
+                openUrl(getCurrentPortal().getGoogleMapsUrl());
                 return true;
             case R.id.menu_share_intel_url:
                 menuShare(getCurrentPortal().getIntelUrl(), getResources().getString(R.string.menu_share_intel_url));
@@ -331,10 +332,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         startActivity(Intent.createChooser(sharingIntent, shareTitle));
     }
 
-    private void openPortalMap() {
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        Portal p = getPortalByScreenPosition(mViewPager.getCurrentItem());
-        String theUrl = p.getGoogleMapsUrl();
+    private void openUrl(String theUrl) {
         Log.d(TAG, "Opening location:" + theUrl);
         final Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse(theUrl));

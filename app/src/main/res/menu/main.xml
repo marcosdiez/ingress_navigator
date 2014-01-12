@@ -15,6 +15,14 @@
         android:showAsAction="always"
         />
 
+
+    <item android:id="@+id/open_intel_url"
+        android:title="@string/open_intel_url"
+        android:icon="@drawable/share"
+        android:orderInCategory="23"
+        />
+
+
     <item android:id="@+id/menu_share_intel_url"
         android:title="@string/menu_share_intel_url"
         android:icon="@drawable/share"
