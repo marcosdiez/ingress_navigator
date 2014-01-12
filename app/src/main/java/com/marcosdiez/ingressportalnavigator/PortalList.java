@@ -85,7 +85,7 @@ public class PortalList {
         Cursor theCursor = portalsRo.query(PortalsDbHelper.PORTAL_DATA_TABLE_NAME,
                 new String[]{"id", "guid", "title", "imageUrl", "lat", "lng" , "address" , "like" },
                 null , null,
-                null, null, "title");
+                null, null, "title COLLATE NOCASE");
 
         Log.d(TAG,"Loading portals...");
         if (theCursor.moveToFirst()) {
@@ -209,8 +209,10 @@ public class PortalList {
         builder.setTables(PortalsDbHelper.PORTAL_DATA_TABLE_NAME);
         builder.setProjectionMap(mColumnMap);
 
+        String orderBy = SearchManager.SUGGEST_COLUMN_TEXT_1 + " COLLATE NOCASE";
+
         Cursor cursor = builder.query(mPortalDbHelper.getReadableDatabase(),
-                columns, selection, selectionArgs, null, null, null);
+                columns, selection, selectionArgs, null, null, orderBy);
 
         if (cursor == null) {
             return null;
