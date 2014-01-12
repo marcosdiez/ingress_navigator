@@ -51,7 +51,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
     static PortalList thePortalList;
     static SeekBar seek_portals;
     SearchView mSearchView;
-    static Portal lastChosenPortal = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,8 +202,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             case R.id.menu_map:
                 openPortalMap();
                 return true;
-            case R.id.menu_share:
-                menuShare();
+            case R.id.menu_share_intel_url:
+                menuShare(getCurrentPortal().getIntelUrl(), getResources().getString(R.string.menu_share_intel_url));
+                return true;
+            case R.id.menu_share_googlemaps_url:
+                menuShare(getCurrentPortal().getGoogleMapsUrl(), getResources().getString(R.string.menu_share_googlemaps_url));
                 return true;
             default:
                 return true;
@@ -278,11 +280,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
                 menuSortByDistance.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
+                        Portal currentPortal = getCurrentPortal();
                         sortByName=false;
                         menuItem.setChecked(true);
                         thePortalList.sortPortalsByDistance();
-                        // LoadPortalById(lastChosenPortal.id);
-                        seek_portals.setProgress(lastChosenPortal.positionByDistance);
+                        LoadPortalById(currentPortal.id);
                         return true;
                     }
                 });
@@ -291,10 +293,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
                 menuSortByName.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
+                        Portal currentPortal = getCurrentPortal();
                         sortByName = true;
                         menuItem.setChecked(true);
-                        //LoadPortalById(lastChosenPortal.id);
-                        seek_portals.setProgress(lastChosenPortal.positionByName);
+                        LoadPortalById(currentPortal.id);
                         return true;
                     }
                 });
@@ -304,6 +306,13 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
     private static boolean sortByName = false;
 
+    private Portal getCurrentPortal(){
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
+        Portal p = getPortalByScreenPosition(mViewPager.getCurrentItem());
+        return p;
+    }
+
+
     private static Portal getPortalByScreenPosition(int pos){
         if(sortByName){
             return thePortalList.getPortalByName(pos);
@@ -312,14 +321,14 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         }
     }
 
-    private void menuShare(){
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        Portal p = getPortalByScreenPosition(mViewPager.getCurrentItem());
-        String theUrl = p.getIntelUrl();
+
+
+
+    private void menuShare(String theUrl, String shareTitle){
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, theUrl);
-        startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.menu_share)));
+        startActivity(Intent.createChooser(sharingIntent, shareTitle));
     }
 
     private void openPortalMap() {
@@ -417,7 +426,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             int portalListID = getArguments().getInt(ARG_SECTION_NUMBER);
 
             final Portal thePortal  = getPortalByScreenPosition(portalListID);
-            lastChosenPortal=thePortal;
 
             if(sortByName){
                 seek_portals.setProgress(thePortal.positionByName);

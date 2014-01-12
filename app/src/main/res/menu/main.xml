@@ -15,10 +15,16 @@
         android:showAsAction="always"
         />
 
-    <item android:id="@+id/menu_share"
-        android:title="@string/menu_share"
+    <item android:id="@+id/menu_share_intel_url"
+        android:title="@string/menu_share_intel_url"
         android:icon="@drawable/share"
         android:orderInCategory="25"
+        />
+
+    <item android:id="@+id/menu_share_googlemaps_url"
+        android:title="@string/menu_share_googlemaps_url"
+        android:icon="@drawable/share"
+        android:orderInCategory="27"
         />
 
     <item android:id="@+id/menu_export_portals"
