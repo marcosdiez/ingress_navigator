@@ -127,7 +127,6 @@ public class PortalList {
         }
     }
 
-
     ///////////////////////// SEARCH BLOAT
     private static final HashMap<String,String> mColumnMap = buildColumnMap();
 

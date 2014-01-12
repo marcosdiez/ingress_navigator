@@ -29,7 +29,6 @@ public class PortalLoaderActivity extends Activity {
         new LoadingPortals().execute();
     }
 
-
     public class LoadingPortals extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... params) {
@@ -47,24 +46,6 @@ public class PortalLoaderActivity extends Activity {
 
 
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        //getMenuInflater().inflate(R.menu.portal_loader, menu);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     /**
      * A placeholder fragment containing a simple view.

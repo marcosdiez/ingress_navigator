@@ -78,7 +78,7 @@ public class JsonLoader {
             addDoubleToDb(portalJson, values, "lng");
 
             String address = portalJson.optString("address");
-            if(address != null){
+            if(address != null && address.length() > 0){
                 values.put("address" , address);
             }
 
