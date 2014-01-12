@@ -36,7 +36,7 @@ public class PortalImageLoader extends AsyncTask<Void, Void, Void> {
     }
 
     void loadImage(){
-        String theImage = thePortal.getExpectedImageFile();
+        theImage = thePortal.getExpectedImageFile();
         File theImageFile = new File(theImage);
         if(theImageFile.exists() && theImageFile.length() > ( 1024 * 5 ) ){
             if(theImage != null){
@@ -54,7 +54,6 @@ public class PortalImageLoader extends AsyncTask<Void, Void, Void> {
 
     protected Void doInBackground(Void... theImageLoader) {
         Log.d(TAG, "doInBackground");
-        theImage = thePortal.getExpectedImageFile();
         DownloadImage(thePortal.imageUrl, thePortal.getExpectedImageFolder(), theImage);
         return null;
     }
