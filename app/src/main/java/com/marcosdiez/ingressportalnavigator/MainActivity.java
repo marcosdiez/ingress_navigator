@@ -137,9 +137,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
         }else{
             tabId = thePortal.positionByDistance;
         }
-        if(tabId > 0 ){
-            LoadPortalByPosition(tabId);
-        }
+        LoadPortalByPosition(tabId);
     }
 
     @Override
@@ -270,17 +268,42 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
     private void prepareSortMenu(Menu menu){
         if(menu!=null){
-            final MenuItem menuSortByDistance =  menu.findItem(R.id.menu_portal_sort_distance);
+            final MenuItem menuSortByGps =  menu.findItem(R.id.menu_portal_sort_by_gps);
+            final MenuItem menuSortByDistanceFromThisPortal =  menu.findItem(R.id.menu_portal_sort_distance_from_this_portal);
             final MenuItem menuSortByName = menu.findItem(R.id.menu_portal_sort_name);
 
-            if(menuSortByDistance != null){
-                menuSortByDistance.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            if(menuSortByDistanceFromThisPortal != null){
+                menuSortByDistanceFromThisPortal.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
+                        Log.d(TAG, "menuSortByDistanceFromThisPortal");
                         Portal currentPortal = getCurrentPortal();
+
+                        GpsStuff.getMyGpsStuff().setLocationManual(currentPortal.lat, currentPortal.lng);
                         sortByName=false;
-                        menuItem.setChecked(true);
                         thePortalList.sortPortalsByDistance();
+
+                        menuItem.setChecked(true);
+                        LoadPortalById(currentPortal.id);
+                        return true;
+                    }
+                });
+            }
+
+
+            if(menuSortByGps != null){
+                menuSortByGps.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        Log.d(TAG, "menuSortByGps");
+                        Portal currentPortal = getCurrentPortal();
+
+                        GpsStuff.getMyGpsStuff().setLocationToGps();
+                        sortByName=false;
+
+                        thePortalList.sortPortalsByDistance();
+
+                        menuItem.setChecked(true);
                         LoadPortalById(currentPortal.id);
                         return true;
                     }
@@ -290,8 +313,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
                 menuSortByName.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
+                        Log.d(TAG, "menuSortByName");
                         Portal currentPortal = getCurrentPortal();
+
                         sortByName = true;
+
                         menuItem.setChecked(true);
                         LoadPortalById(currentPortal.id);
                         return true;

@@ -42,6 +42,7 @@ public class PortalLoaderActivity extends Activity {
             Intent i = new Intent(me , MainActivity.class);
             startActivity(i);
             super.onPostExecute(result);
+            finish();
         }
 
 

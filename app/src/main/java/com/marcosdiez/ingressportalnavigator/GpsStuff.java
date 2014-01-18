@@ -24,9 +24,10 @@ public class GpsStuff implements LocationListener {
     LocationManager locationManager;
     Criteria c = new Criteria();
     String provider;
-    Location location;
-    public double lat;
-    public double lng;
+
+    public double lat=0;
+    public double lng=0;
+    boolean useGps = true;
 
     public String distanceFromHereStr(double toLat, double toLng){
         double distance = distanceFromHere(toLat,toLng);
@@ -39,16 +40,27 @@ public class GpsStuff implements LocationListener {
         return Math.round(distance/1000) + "km";
     }
 
-    public Location GetNewLocation(){
-        Location newLocation = locationManager.getLastKnownLocation(provider);
-        if(newLocation!=null){
-            location = newLocation;
+    public void setLocationToGps(){
+        useGps=true;
+    }
+
+    public void setLocationManual(double lat, double lng){
+        useGps=false;
+        this.lat=lat;
+        this.lng=lng;
+    }
+
+    public void refreshLocation(){
+        if(useGps){
+            Location newLocation = locationManager.getLastKnownLocation(provider);
+            if(newLocation!=null){
+                Location location = newLocation;
+                if(location != null){
+                    lng=location.getLongitude();
+                    lat=location.getLatitude();
+                }
+            }
         }
-        if(location != null){
-            lng=location.getLongitude();
-            lat=location.getLatitude();
-        }
-        return location;
     }
 
     public String locationToAddress(double lat, double lng){
@@ -76,7 +88,7 @@ public class GpsStuff implements LocationListener {
 
 
     public double distanceFromHere(double toLat, double toLng){
-        GetNewLocation();
+        refreshLocation();
         return distanceFromHereHelper(toLat, toLng);
     }
 
@@ -103,34 +115,15 @@ public class GpsStuff implements LocationListener {
 
     @Override
     public void onLocationChanged(Location loc) {
-        lat = loc.getLatitude();
-        lng = loc.getLongitude();
+        if(useGps){
+            lat = loc.getLatitude();
+            lng = loc.getLongitude();
 
-        String longitude = "Longitude: " + loc.getLongitude();
-        Log.v(TAG, longitude);
-        String latitude = "Latitude: " + loc.getLatitude();
-        Log.v(TAG, latitude);
-
-
-
-//        /*-------to get City-Name from coordinates -------- */
-//        String cityName = null;
-//
-//        Geocoder gcd = new Geocoder(theContext, Locale.getDefault());
-//        List<Address> addresses;
-//        try {
-//            addresses = gcd.getFromLocation(loc.getLatitude(),
-//                    loc.getLongitude(), 1);
-//            if (addresses.size() > 0)
-//                Log.d(TAG,addresses.get(0).getLocality());
-//            cityName = addresses.get(0).getLocality();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        String s = longitude + "\n" + latitude + "\n\nMy Current City is: "
-//                + cityName;
-
-        //Log.d(TAG, s);
+            String longitude = "Longitude: " + loc.getLongitude();
+            Log.v(TAG, longitude);
+            String latitude = "Latitude: " + loc.getLatitude();
+            Log.v(TAG, latitude);
+        }
     }
 
     @Override
@@ -141,5 +134,4 @@ public class GpsStuff implements LocationListener {
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {}
-//    }
 }

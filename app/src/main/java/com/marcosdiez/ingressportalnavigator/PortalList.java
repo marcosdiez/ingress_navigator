@@ -6,16 +6,13 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.location.Location;
 import android.provider.BaseColumns;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * Created by Marcos on 12/19/13.
@@ -109,14 +106,10 @@ public class PortalList {
     }
 
     public void sortPortalsByDistance(){
-        Location theLocation = GpsStuff.getMyGpsStuff().GetNewLocation();
-        double lat = 0;
-        double lng = 0;
+        GpsStuff.getMyGpsStuff().refreshLocation();
+        double lat = GpsStuff.getMyGpsStuff().lat;
+        double lng = GpsStuff.getMyGpsStuff().lng;
 
-        if(theLocation!=null){
-            lat = theLocation.getLatitude();
-            lng = theLocation.getLongitude();
-        }
         for(Portal p : portalsByLocation){
             p.GetDistance(lat,lng);
         }
