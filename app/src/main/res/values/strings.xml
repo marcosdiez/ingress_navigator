@@ -28,7 +28,7 @@
     <string name="search_instructions">search_instructions</string>
     <string name="no_results">no_results</string>
     <string name="export">export</string>
-    <string name="open_checked_portals_with_google_earth">Open With Google Earth</string>
+    <string name="open_checked_portals_with_google_earth">Export to Google Earth</string>
 
     <plurals name="search_results">
         <item quantity="one">%1$d result for \"%2$s\": </item>

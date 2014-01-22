@@ -35,11 +35,7 @@
         android:orderInCategory="27"
         />
 
-    <item android:id="@+id/menu_export_portals"
-        android:title="@string/export_choosen_portals"
-        android:orderInCategory="30"
-        android:showAsAction="never"
-        />
+
     <item android:id="@+id/menu_open_checked_portals_with_google_earth"
         android:title="@string/open_checked_portals_with_google_earth"
         android:orderInCategory="30"

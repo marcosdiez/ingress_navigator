@@ -185,11 +185,11 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
                 CheckBox checkbox_like = (CheckBox) findViewById(R.id.checkbox_export);
                 checkbox_like.setChecked(false);
                 return true;
-            case R.id.menu_export_portals:
-                exportCheckedPortals();
-                return true;
+//            case R.id.menu_export_portals:
+//                GoogleEarth.exportCheckedPortals(this);
+//                return true;
             case R.id.menu_open_checked_portals_with_google_earth:
-                openGoogleEarth();
+                GoogleEarth.showExportDialog(this);
                 return true;
             case R.id.open_intel_url:
                 openUrl(getCurrentPortal().getIntelUrl());
@@ -207,64 +207,6 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
                 return true;
         }
     }
-
-    private File createKmlFile(){
-        String output = thePortalList.makeKmlOfLikedPortals();
-        if(output == null){
-            Toast.makeText(Globals.getContext(),"No portals were chosen",Toast.LENGTH_SHORT).show();
-            return null;
-        }
-        File outputDir = new File(Globals.getPublicWritableFolder());
-        try {
-            File outputFile = File.createTempFile("exported_portals", ".kml", outputDir);
-            outputFile.setReadable(true,false);
-            FileWriter out = new FileWriter(outputFile);
-            out.write(output);
-            out.flush();
-            out.close();
-            return outputFile;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private void openGoogleEarth(){
-        File outputFile = createKmlFile();
-        if(outputFile==null){
-            return;
-        }
-        Uri earthURI = Uri.fromFile(outputFile);
-        Intent earthIntent = new Intent(Intent.ACTION_VIEW);
-        earthIntent.setDataAndType(earthURI, "application/vnd.google-earth.kml+xml");
-        // earthIntent.putExtra("com.google.earth.EXTRA.tour_feature_id", "my_track");
-
-//        earthIntent.setType("application/vnd.google-earth.kml+xml");
-//        earthIntent.putExtra(Intent.EXTRA_STREAM, earthURI);
-        try{
-            startActivity(earthIntent);
-        }catch( android.content.ActivityNotFoundException e){
-            Toast.makeText(Globals.getContext(),"Google Earth not installed ?",Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void exportCheckedPortals(){
-        File outputFile = createKmlFile();
-        if(outputFile == null){
-            return;
-        }
-
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("application/vnd.google-earth.kml+xml");
-        intent.putExtra(Intent.EXTRA_SUBJECT, "List of Portals");
-        intent.putExtra(Intent.EXTRA_TEXT,
-                thePortalList.makeTextOfLikedPortals());
-
-        Uri earthURI = Uri.fromFile(outputFile);
-        intent.putExtra(Intent.EXTRA_STREAM, earthURI);
-        startActivity(Intent.createChooser(intent, "Send email..."));
-    }
-
 
     private void prepareSortMenu(Menu menu){
         if(menu!=null){

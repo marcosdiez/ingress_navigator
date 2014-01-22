@@ -22,7 +22,7 @@ public class Portal  implements Comparable<Portal>{
     public double lng;
     public int positionByName;
     public int positionByDistance;
-    public double lastDistance = 0;
+    public double lastDistance = 0; // meters
     boolean like = false;
 
     private String address=null;

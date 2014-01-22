@@ -37,8 +37,7 @@ public class PortalList {
 
     public int size(){
         return portalsByName.size();
-    }
-
+    }x
     public Portal getPortalById(int id){
         return portalById.get(id);
     }
@@ -222,15 +221,18 @@ public class PortalList {
         }
     }
 
-    public String makeTextOfLikedPortals(){
+    public String makeTextOfLikedPortals(boolean checkedPortals, double maximumDistance){
         StringBuilder output = new StringBuilder();
         String br = "\n";
 
         GoogleMapsUrl multiUrl = new GoogleMapsUrl();
 
         output.append("List of Portals" + br + br+ br);
+
         for( Portal thePortal: portalsByName){
-            if(thePortal.getLike()){
+            boolean takeItBecauseIsChecked = checkedPortals && thePortal.getLike();
+            boolean takeItBecauseOfTheDistance = maximumDistance > 0 && thePortal.getLastDistance() < maximumDistance;
+            if( takeItBecauseIsChecked || takeItBecauseOfTheDistance ){
                 multiUrl.addTarget(thePortal);
                 output.append(thePortal.getDescription());
                 output.append(br);
@@ -276,7 +278,7 @@ public class PortalList {
     }
 
 
-    public String makeKmlOfLikedPortals(){
+    public String makeKmlOfLikedPortals(boolean checkedPortals, double maximumDistance){
         int counter=0;
         StringBuilder output = new StringBuilder();
         output.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
@@ -289,9 +291,14 @@ public class PortalList {
         ArrayList<Portal> likedPortals = new ArrayList<Portal>();
 
         for( Portal thePortal: portalsByName){
-            if(thePortal.getLike()){
+            boolean takeItBecauseIsChecked = checkedPortals && thePortal.getLike();
+            boolean takeItBecauseOfTheDistance = maximumDistance > 0 && thePortal.getLastDistance() < maximumDistance;
+
+            if( takeItBecauseIsChecked || takeItBecauseOfTheDistance ){
                 output.append(thePortal.getKmlPart());
-                likedPortals.add(thePortal);
+                if( takeItBecauseIsChecked){
+                    likedPortals.add(thePortal);
+                }
                 counter++;
             }
         }
