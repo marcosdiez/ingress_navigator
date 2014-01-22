@@ -37,7 +37,7 @@ public class PortalList {
 
     public int size(){
         return portalsByName.size();
-    }x
+    }
     public Portal getPortalById(int id){
         return portalById.get(id);
     }
@@ -59,7 +59,7 @@ public class PortalList {
 
     private void loadDataFromJsonIfNecessary(){
         SharedPreferences settings = Globals.getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
-        int myJsonVersion = 5;
+        int myJsonVersion = Globals.portalSampleJsonVersion;
         Log.d(TAG, "APK json data version: "  + myJsonVersion + "/" + settings.getInt("jsonVersion" , 0 ));
         if( settings.getInt("jsonVersion" , 0 ) < myJsonVersion ){
             Log.d(TAG, "Loading portals from JSON");
