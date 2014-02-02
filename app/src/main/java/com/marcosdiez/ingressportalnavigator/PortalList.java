@@ -229,6 +229,8 @@ public class PortalList {
 
         output.append("List of Portals" + br + br+ br);
 
+        ArrayList<Portal> likedPortals = new ArrayList<Portal>();
+
         for( Portal thePortal: portalsByName){
             boolean takeItBecauseIsChecked = checkedPortals && thePortal.getLike();
             boolean takeItBecauseOfTheDistance = maximumDistance > 0 && thePortal.getLastDistance() < maximumDistance;
@@ -237,19 +239,57 @@ public class PortalList {
                 output.append(thePortal.getDescription());
                 output.append(br);
                 output.append(br);
+
+                if(takeItBecauseIsChecked){
+                    likedPortals.add(thePortal);
+                }
             }
         }
 
-        output.append("You can navigate to all portals though your PC's google maps following this URL:\n" + multiUrl.getTargetUrl() + "\n\n" );
+        double areaSize = calculateAreaOfTriangle(likedPortals);
+
+        if(areaSize > 0){
+            String area = GpsStuff.distanceAsPrettyString(calculateAreaOfTriangle(likedPortals)) +"2";
+            output.append("If you link the three chosen portals you can make field of " + area
+                     + "\n\n" );
+        }
+
+        output.append("You can navigate to all portals through your PC's google maps following this URL:\n" + multiUrl.getTargetUrl() + "\n\n" );
 
         output.append("The attached KML file can be opened with Google Earth");
 
         return output.toString();
     }
 
+    public static double calculateAreaOfTriangle(ArrayList<Portal> likedPortals){
+        if(likedPortals.size()!=3){
+            return -1;
+        }
+
+        Portal p1 = likedPortals.get(0);
+        Portal p2 = likedPortals.get(1);
+        Portal p3 = likedPortals.get(2);
+
+        double side1 = p1.GetDistance(p2);
+        double side2 = p1.GetDistance(p3);
+        double side3 = p3.GetDistance(p2);
+
+        // hermes formula
+        //        s = (a + b + c) / 2
+        //        area = sqrt(s * (s - a) * (s - b) * (s - c))
+        //        http://www.onlineconversion.com/shape_area_scalene_triangle.htm
+
+        double p = (side1 + side2 + side3)/2.0;
+        double area = Math.sqrt(p * ( p - side1 ) * (p - side2) * (p - side3) );
+
+        return area;
+    }
+
     public void makePoligon(StringBuilder output,  ArrayList<Portal> likedPortals){
+        String area = GpsStuff.distanceAsPrettyString(calculateAreaOfTriangle(likedPortals)) +"2";
+
         output.append("<Placemark>\n");
-        output.append("\t<name>The Field</name>\n");
+        output.append("\t<name>The Field. Area: " + area + "</name>\n");
         output.append("\t\t<Polygon>\n");
         output.append("\t\t\t<tessellate>1</tessellate>\n");
         output.append("\t\t\t<outerBoundaryIs>\n");

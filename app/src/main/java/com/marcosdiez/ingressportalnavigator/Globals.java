@@ -7,7 +7,7 @@ import android.os.Environment;
  * Created by Marcos on 12/21/13.
  */
 public class Globals {
-    public static final int portalSampleJsonVersion = 12;
+    public static final int portalSampleJsonVersion = 17;
 
     private static Context context=null;
     public static void setContext(Context context){

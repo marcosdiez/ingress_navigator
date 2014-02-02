@@ -55,6 +55,10 @@ public class Portal  implements Comparable<Portal>{
         return lastDistance;
     }
 
+    public double GetDistance(Portal otherPortal){
+        return GetDistance(otherPortal.lat , otherPortal.lng);
+    }
+
     public double GetDistance(double fromLat, double fromLng){
         float result[] = { 0 };
         Location.distanceBetween(fromLat, fromLng, lat, lng, result);
@@ -176,7 +180,8 @@ public class Portal  implements Comparable<Portal>{
         return "        <Placemark>\n" +
                 "                <name>"+title+"</name>\n" +
                 "                <description><![CDATA[\n" + title + "<br>" +
-                "                <a href=\"http://maps.google.com/maps?daddr="+lat+","+lng+"\">Open Google Maps</a>\n" +
+                "                <a href=\"" + getGoogleMapsUrl() + "\">Open Google Maps</a>\n" +
+                "                <a href=\"" + getIntelUrl() + "\">Open Intel/IITC</a>\n" +
                 address + "\n" +
                 "                <img src=\""+imageUrl+"\">\n" +
                 "                ]]></description>\n" +

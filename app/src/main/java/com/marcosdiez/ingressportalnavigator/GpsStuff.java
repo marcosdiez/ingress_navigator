@@ -31,13 +31,17 @@ public class GpsStuff implements LocationListener {
 
     public String distanceFromHereStr(double toLat, double toLng){
         double distance = distanceFromHere(toLat,toLng);
+        return distanceAsPrettyString(distance);
+    }
+
+    public static String distanceAsPrettyString(double distance) {
         if(distance < 1000){
             return Math.round(distance) + "m";
         }
         if(distance < 10000){
             return ((float)Math.round(distance/100))/10.0 + "km";
         }
-        return Math.round(distance/1000) + "km";
+        return Math.round(distance/(1000*1000)) + "km";
     }
 
     public void setLocationToGps(){
@@ -74,6 +78,7 @@ public class GpsStuff implements LocationListener {
                 for(int i=0; i<returnedAddress.getMaxAddressLineIndex(); i++) {
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
                 }
+                strReturnedAddress.append(returnedAddress.getCountryName()).append("\n");
                 return strReturnedAddress.toString();
             }
             else{
@@ -91,6 +96,14 @@ public class GpsStuff implements LocationListener {
         refreshLocation();
         return distanceFromHereHelper(toLat, toLng);
     }
+
+
+    public static double distanceBetween(double lat1, double lng1, double lat2, double lng2){
+        float result[] = { 0 };
+        Location.distanceBetween(lat1, lng1, lat2, lng2, result);
+        return result[0];
+    }
+
 
     double distanceFromHereHelper(double toLat, double toLng){
         float result[] = { 0 };
