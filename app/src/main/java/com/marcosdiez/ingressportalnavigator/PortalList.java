@@ -19,7 +19,7 @@ import java.util.LinkedHashMap;
  */
 public class PortalList {
     private final static String TAG = "ING_PortalList";
-    private static int initalNumPortals = 1900;
+    private static int initalNumPortals = 7000;
 
     private ArrayList<Portal> portalsByName = new ArrayList<Portal>(initalNumPortals);
     private LinkedHashMap<Integer,Portal> portalById = new LinkedHashMap<Integer, Portal>(initalNumPortals);
@@ -68,6 +68,12 @@ public class PortalList {
             editor1.putInt("jsonVersion", myJsonVersion);
             editor1.commit();
         }
+    }
+
+
+    public void loadExtraJson(String jsonContent){
+        new JsonLoader().load(jsonContent);
+        loadPortalData();
     }
 
     private void loadDataFromJson() {

@@ -41,7 +41,7 @@ public class GpsStuff implements LocationListener {
         if(distance < 10000){
             return ((float)Math.round(distance/100))/10.0 + "km";
         }
-        return Math.round(distance/(1000*1000)) + "km";
+        return Math.round(distance/(1000)) + "km";
     }
 
     public void setLocationToGps(){

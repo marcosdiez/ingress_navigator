@@ -17,7 +17,7 @@ public class GoogleMapsUrl {
     }
 
     public void addTarget(double lat, double lng){
-        String latLng = + lat + "," + lng;
+        String latLng =  lat + "," + lng;
 
         switch(counter){
             case 0:

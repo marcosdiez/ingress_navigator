@@ -58,6 +58,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:pathPattern=".*\\.portals" android:scheme="http" android:host="*" />
                 <data android:pathPattern=".*\\.portals" android:scheme="https" android:host="*" />
+                <data android:pathPattern=".*\\.portals" android:scheme="file" android:host="*" />
+                <data android:pathPattern=".*\\.portals" android:scheme="content" android:host="*" />
             </intent-filter>
 
 
