@@ -19,7 +19,7 @@ import java.util.LinkedHashMap;
  */
 public class PortalList {
     private final static String TAG = "ING_PortalList";
-    private static int initalNumPortals = 7000;
+    private static int initalNumPortals = 6500;
 
     private ArrayList<Portal> portalsByName = new ArrayList<Portal>(initalNumPortals);
     private LinkedHashMap<Integer,Portal> portalById = new LinkedHashMap<Integer, Portal>(initalNumPortals);
@@ -88,6 +88,10 @@ public class PortalList {
                 new String[]{"id", "guid", "title", "imageUrl", "lat", "lng" , "address" , "like" },
                 null , null,
                 null, null, "title COLLATE NOCASE");
+
+        portalById.clear();
+        portalsByLocation.clear();
+        portalsByName.clear();
 
         Log.d(TAG,"Loading portals...");
         if (theCursor.moveToFirst()) {

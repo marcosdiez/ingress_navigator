@@ -73,14 +73,22 @@ public class PortalLoaderActivity extends Activity {
             return;
         }
         Log.d(TAG, "Received URL:" + data);
-        String jsonData = DownloadToMemory(data);
+        String jsonData = loadFile(data);
         Log.d(TAG, "Data downloaded");
         if(jsonData!=null){
             PortalList.getPortalList().loadExtraJson(jsonData);
         }
     }
 
-    String DownloadToMemory(String theURL) {
+    String loadFile(String theUrl){
+        if(theUrl.startsWith("file://")){
+            return JsonLoader.readRawTextFile(theUrl.substring(8));
+        }
+        return downloadToMemory(theUrl);
+    }
+
+
+    String downloadToMemory(String theURL) {
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(theURL);
         HttpResponse response = null;

@@ -60,6 +60,7 @@
                 <data android:pathPattern=".*\\.portals" android:scheme="https" android:host="*" />
                 <data android:pathPattern=".*\\.portals" android:scheme="file" android:host="*" />
                 <data android:pathPattern=".*\\.portals" android:scheme="content" android:host="*" />
+                <data android:mimeType="application/octet-stream" />
             </intent-filter>
 
 

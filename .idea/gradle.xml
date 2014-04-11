@@ -4,7 +4,13 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="V:\code\IngressPortalNavigator\IngressPortalNavigator" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="V:\code\IngressPortalNavigator\IngressPortalNavigator" />
+            <option value="V:\code\IngressPortalNavigator\IngressPortalNavigator\app" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>

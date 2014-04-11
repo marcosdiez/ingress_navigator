@@ -9,6 +9,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,7 +24,24 @@ public class JsonLoader {
     public static String readRawTextFile(int resId)
     {
         InputStream inputStream = Globals.getContext().getResources().openRawResource(resId);
+        return readInputStream(inputStream);
+    }
 
+    public static String readRawTextFile(String filePath)
+    {
+        Log.d("JsonLoader", "Loading content of [" + filePath + "]");
+        File fl = new File(filePath);
+        try{
+        FileInputStream inputStream = new FileInputStream(fl);
+        return readInputStream(inputStream);
+        } catch ( FileNotFoundException f ){
+            Log.d("JsonLoader", "File [" + filePath +"] does not exist.");
+        }
+        return null;
+    }
+
+
+    static String readInputStream(InputStream inputStream) {
         InputStreamReader inputreader = new InputStreamReader(inputStream);
         BufferedReader buffreader = new BufferedReader(inputreader);
         String line;
