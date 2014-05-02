@@ -159,7 +159,7 @@ public class Portal  implements Comparable<Portal>{
     }
 
     public String getGoogleMapsUrl(){
-        return "http://maps.google.com/maps?q=" + lat + "," + lng;
+        return GoogleMapsUrl.getSinglePointUrl(lat,lng);
     }
 
     public String getIntelUrl(){

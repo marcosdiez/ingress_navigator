@@ -10,6 +10,10 @@ public class GoogleMapsUrl {
     public GoogleMapsUrl(){
     }
 
+    public static String getSinglePointUrl(double lat, double lng){
+        return "http://maps.google.com/maps?q=" + lat + "," + lng;
+    }
+
     // https://maps.google.com/maps?saddr=-24.3,-47.3&daddr=-24.4,-47.4+to:-24.5,-47.5+to:-24.6,-47.6
 
     public void addTarget(Portal thePortal){

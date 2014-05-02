@@ -300,6 +300,7 @@ public class PortalList {
 
         output.append("<Placemark>\n");
         output.append("\t<name>The Field. Area: " + area + "</name>\n");
+        output.append("\t<styleUrl>#m_ylw-pushpin</styleUrl>\n");
         output.append("\t\t<Polygon>\n");
         output.append("\t\t\t<tessellate>1</tessellate>\n");
         output.append("\t\t\t<outerBoundaryIs>\n");
@@ -336,7 +337,42 @@ public class PortalList {
                 "        <Document>\n" +
                 "                <Folder>\n" +
                 "                <name>Placemarks</name>\n" +
-                "                <open>0</open>\n");
+                "                <open>0</open>\n" +
+                "<Style id=\"s_ylw-pushpin_hl\">" +
+                        "    <IconStyle>" +
+                        "      <scale>1.3</scale>" +
+                        "      <Icon>" +
+                        "        <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>" +
+                        "      </Icon>" +
+                        "      <hotSpot x=\"20\" y=\"2\" xunits=\"pixels\" yunits=\"pixels\"/>" +
+                        "    </IconStyle>" +
+                        "    <PolyStyle>" +
+                        "      <color>7fff0000</color>" +
+                        "    </PolyStyle>" +
+                        "  </Style>" +
+                        "  <Style id=\"s_ylw-pushpin\">" +
+                        "    <IconStyle>" +
+                        "      <scale>1.1</scale>" +
+                        "      <Icon>" +
+                        "        <href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>" +
+                        "      </Icon>" +
+                        "      <hotSpot x=\"20\" y=\"2\" xunits=\"pixels\" yunits=\"pixels\"/>" +
+                        "    </IconStyle>" +
+                        "    <PolyStyle>" +
+                        "      <color>7fff0000</color>" +
+                        "    </PolyStyle>" +
+                        "  </Style>" +
+                        "  <StyleMap id=\"m_ylw-pushpin\">" +
+                        "    <Pair>" +
+                        "      <key>normal</key>" +
+                        "      <styleUrl>#s_ylw-pushpin</styleUrl>" +
+                        "    </Pair>" +
+                        "    <Pair>" +
+                        "      <key>highlight</key>" +
+                        "      <styleUrl>#s_ylw-pushpin_hl</styleUrl>" +
+                        "    </Pair>" +
+                        "  </StyleMap>"
+        );
 
         ArrayList<Portal> likedPortals = new ArrayList<Portal>();
 

@@ -60,7 +60,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
         // load Data
         thePortalList = PortalList.getPortalList();
-        Toast.makeText(Globals.getContext(),"Loaded " + thePortalList.size() + " portals", Toast.LENGTH_LONG).show();
+
+        String theText = getString(R.string.loaded_x_portals, thePortalList.size());
+        Toast.makeText(Globals.getContext(),theText, Toast.LENGTH_LONG).show();
 
         prepareSeekBar();
         // Create the adapter that will return a fragment for each of the three
@@ -412,7 +414,8 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             txt_portal_position.setText(thePortal.lat  + "," + thePortal.lng);
 
             String distance = GpsStuff.getMyGpsStuff().distanceFromHereStr(thePortal.lat, thePortal.lng);
-            txt_portal_distance.setText("Distance: " + distance  );
+
+            txt_portal_distance.setText(getString(R.string.distance) +": " + distance);
 
             new PortalImageLoader(image_portal, loading_spinner, thePortal).loadImage();
             new PortalAddressLoader(txt_portal_address, thePortal).loadAddress();
