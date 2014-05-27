@@ -23,7 +23,7 @@
     <string name="no_results">sem resultados</string>
     <string name="export">Exportar</string>
     <string name="open_checked_portals_with_google_earth">Exportar p/ Google Earth</string>
-
+    <string name="share_every_portal_info">Compartilhar Dados do Portal</string>
     <string name="loaded_x_portals">%d Portais Carregados</string>
 
     <plurals name="search_results">

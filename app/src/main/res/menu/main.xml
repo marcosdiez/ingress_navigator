@@ -35,6 +35,13 @@
         android:orderInCategory="27"
         />
 
+    <item android:id="@+id/menu_share_portal_info"
+        android:title="@string/share_every_portal_info"
+        android:icon="@drawable/share"
+        android:orderInCategory="29"
+        />
+
+
 
     <item android:id="@+id/menu_open_checked_portals_with_google_earth"
         android:title="@string/open_checked_portals_with_google_earth"

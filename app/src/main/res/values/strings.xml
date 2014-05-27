@@ -23,6 +23,7 @@
     <string name="label_chooser">Label Chooser</string>
     <string name="drawer_open">Show navigation menu</string>
     <string name="drawer_close">Hide navigation menu</string>
+    <string name="share_every_portal_info">Share Portal Info</string>
     <string name="placeholder">placeholder</string>
     <string name="search_hint">Portal Name</string>
     <string name="search">search</string>

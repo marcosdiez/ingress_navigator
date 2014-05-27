@@ -80,7 +80,7 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
     private void prepareSeekBar() {
         seek_portals = (SeekBar) findViewById(R.id.seek_portals);
-        seek_portals.setMax(thePortalList.size());
+        seek_portals.setMax(thePortalList.size()-1);
         seek_portals.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int seekBarPosition, boolean fromTouch) {
@@ -205,6 +205,9 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
             case R.id.menu_share_googlemaps_url:
                 menuShare(getCurrentPortal().getGoogleMapsUrl(), getResources().getString(R.string.menu_share_googlemaps_url));
                 return true;
+            case R.id.menu_share_portal_info:
+                menuShare(getCurrentPortal().getDescription(), getResources().getString(R.string.share_every_portal_info));
+                return true;
             default:
                 return true;
         }
@@ -291,10 +294,10 @@ public class MainActivity extends Activity implements ActionBar.TabListener, Sea
 
 
 
-    private void menuShare(String theUrl, String shareTitle){
+    private void menuShare(String theText, String shareTitle){
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, theUrl);
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, theText);
         startActivity(Intent.createChooser(sharingIntent, shareTitle));
     }
 
