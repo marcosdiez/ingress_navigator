@@ -168,21 +168,24 @@ public class Portal  implements Comparable<Portal>{
 
     public String getDescription(){
         String br = "\n";
+        String fixedAddress = address != null ? address : "";
+
         return
-                title + br +
-                address + br +
-                imageUrl + br +
-                getGoogleMapsUrl() + br +
-                getIntelUrl();
+                title + br + br +
+                fixedAddress + br + br +
+                "Picture: " + imageUrl + br + br +
+                "Map: " + getGoogleMapsUrl() + br + br +
+                "Intel URL: " + getIntelUrl();
     }
 
     public String getKmlPart(){
+        String fixedAddress = address != null ? address : "";
         return "        <Placemark>\n" +
                 "                <name>"+title+"</name>\n" +
                 "                <description><![CDATA[\n" + title + "<br>" +
                 "                <a href=\"" + getGoogleMapsUrl() + "\">Open Google Maps</a>\n" +
                 "                <a href=\"" + getIntelUrl() + "\">Open Intel/IITC</a>\n" +
-                address + "\n" +
+                fixedAddress + "\n" +
                 "                <img src=\""+imageUrl+"\">\n" +
                 "                ]]></description>\n" +
                 "                <Point>\n" +
